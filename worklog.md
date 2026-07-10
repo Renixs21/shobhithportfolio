@@ -123,3 +123,22 @@ Stage Summary:
 - Lint: clean
 - Marquee now matches reference aesthetic (premium editorial alternating outline/fill + star separators)
 - Works in both themes as intentional dark divider
+
+---
+Task ID: 18
+Agent: orchestrator (main)
+Task: Remove logo glow + fix invisible "BJ" and "something magical." gradient text
+
+Work Log:
+- Diagnosed "BJ" invisibility: text-signal-gradient (background-clip:text + transparent fill) was on the OUTER RevealText wrapper, but the inner text-bearing motion.span inherited transparent fill with no background → text vanished
+- Added innerClassName prop to RevealText so gradient/solid classes can target the inner text element
+- Found gradient-on-italic-serif still failed to render even with innerClassName (background-clip:text + Instrument Serif combination unreliable) → switched BJ to solid text-ember (orange) italic, which renders reliably
+- Hero "BJ": direct motion.span (bypassing RevealText) with font-italic-accent + text-ember + reveal animation
+- Transmit "something magical.": RevealText innerClassName=font-italic-accent text-ember (solid works through innerClassName)
+- Removed outer glow halo (rgba col fill at r*2.1) from constellation node drawing — logos now render as clean white badges with accent ring only, no blurred glow
+- Browser-verified: BJ visible in orange italic below Shobhith; "something magical." visible in orange; logos clean with no glow
+
+Stage Summary:
+- Lint: clean
+- BJ + "something magical." now visible (solid ember italic instead of fragile gradient-on-italic)
+- Constellation logos de-glowed (clean white badge + ring only)

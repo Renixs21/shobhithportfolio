@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
-import { readColorVar } from "@/lib/color-utils";
+import { readColorVar, deviconUrl } from "@/lib/color-utils";
 import {
   SKILL_NODES,
   SKILL_EDGES,
@@ -19,6 +19,8 @@ interface SimNode extends SkillNode {
   ty: number;
   r: number;
   glow: number;
+  img?: HTMLImageElement;
+  imgReady: boolean;
 }
 
 // Map each skill group to a signal color token. Resolved live from the
@@ -74,6 +76,25 @@ export function ConstellationSection() {
     });
     const mouse = { x: -9999, y: -9999, active: false };
 
+    /** Rounded-rectangle path helper for the hover label pill. */
+    const roundRect = (
+      c: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      radius: number
+    ) => {
+      const r = Math.min(radius, width / 2, height / 2);
+      c.beginPath();
+      c.moveTo(x + r, y);
+      c.arcTo(x + width, y, x + width, y + height, r);
+      c.arcTo(x + width, y + height, x, y + height, r);
+      c.arcTo(x, y + height, x, y, r);
+      c.arcTo(x, y, x + width, y, r);
+      c.closePath();
+    };
+
     let nodes: SimNode[] = [];
 
     const resize = () => {
@@ -88,17 +109,36 @@ export function ConstellationSection() {
     };
 
     const layout = () => {
-      nodes = SKILL_NODES.map((n) => ({
-        ...n,
-        x: w / 2,
-        y: h / 2,
-        vx: 0,
-        vy: 0,
-        tx: w / 2,
-        ty: h / 2,
-        r: 4 + n.level * 1.1,
-        glow: 0,
-      }));
+      nodes = SKILL_NODES.map((n) => {
+        const sim: SimNode = {
+          ...n,
+          x: w / 2,
+          y: h / 2,
+          vx: 0,
+          vy: 0,
+          tx: w / 2,
+          ty: h / 2,
+          r: 13 + n.level * 2.2,
+          glow: 0,
+          imgReady: false,
+        };
+        // Lazy-load the technology logo for this node.
+        if (n.icon && !sim.img) {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => {
+            sim.img = img;
+            sim.imgReady = true;
+          };
+          img.onerror = () => {
+            sim.imgReady = false;
+          };
+          img.src = deviconUrl(n.icon.name, n.icon.variant);
+        } else if (sim.img) {
+          sim.imgReady = true;
+        }
+        return sim;
+      });
 
       // Position each group in a ring around the center.
       const cx = w / 2;
@@ -210,36 +250,65 @@ export function ConstellationSection() {
         ctx.fillText(g.label.toUpperCase(), lx, ly);
       });
 
-      // Draw nodes
+      // Draw nodes — technology logos clipped into circular badges.
       for (const p of nodes) {
         const col = groupColor(p.group, ember, aurora);
         const isHovered = hovered === p;
-        const r = p.r * (isHovered ? 1.5 : 1) * (0.8 + p.glow * 0.4);
+        const r = p.r * (isHovered ? 1.32 : 1) * (0.85 + p.glow * 0.3);
 
-        // glow halo
-        ctx.fillStyle = `rgba(${col}, ${0.1 * p.glow})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, r * 4, 0, Math.PI * 2);
-        ctx.fill();
-
-        // ring
-        ctx.strokeStyle = `rgba(${col}, ${0.4 * p.glow})`;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, r * 1.8, 0, Math.PI * 2);
-        ctx.stroke();
-
-        // core
-        ctx.fillStyle = `rgba(${col}, ${0.95 * p.glow})`;
+        // badge background disc (gives logos a consistent surface)
+        ctx.fillStyle = "rgba(255, 255, 255, 0.96)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fill();
 
-        // label on hover
+        // accent ring
+        ctx.strokeStyle = `rgba(${col}, ${isHovered ? 0.95 : 0.5 * p.glow})`;
+        ctx.lineWidth = isHovered ? 2.4 : 1.4;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // logo image clipped to the circle, or initials fallback
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r * 0.72, 0, Math.PI * 2);
+        ctx.clip();
+        if (p.imgReady && p.img) {
+          const size = r * 1.5;
+          ctx.drawImage(p.img, p.x - size / 2, p.y - size / 2, size, size);
+        } else {
+          // initials fallback
+          ctx.fillStyle = `rgba(${col}, 0.9)`;
+          ctx.font = `600 ${Math.round(r * 0.7)}px var(--font-geist-sans), sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(p.initials, p.x, p.y + 1);
+        }
+        ctx.restore();
+
+        // label appears ONLY on hover
         if (isHovered) {
           ctx.font = "600 13px var(--font-geist-sans), sans-serif";
-          ctx.fillStyle = "rgba(245, 241, 234, 0.95)";
-          ctx.fillText(p.label, p.x, p.y - r - 12);
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          const label = p.label;
+          const padX = 10;
+          const tw = ctx.measureText(label).width;
+          const bx = p.x - tw / 2 - padX;
+          const by = p.y - r - 30;
+          const bw = tw + padX * 2;
+          const bh = 24;
+          // pill background
+          ctx.fillStyle = "rgba(10, 10, 10, 0.92)";
+          roundRect(ctx, bx, by, bw, bh, 12);
+          ctx.fill();
+          ctx.strokeStyle = `rgba(${col}, 0.6)`;
+          ctx.lineWidth = 1;
+          roundRect(ctx, bx, by, bw, bh, 12);
+          ctx.stroke();
+          ctx.fillStyle = "rgba(245, 241, 234, 0.97)";
+          ctx.fillText(label, p.x, by + bh / 2);
         }
       }
 
@@ -289,11 +358,41 @@ export function ConstellationSection() {
       }
     };
 
+    // Click a node → open its official page in a new tab.
+    const onClick = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      for (const p of nodes) {
+        const dx = p.x - mx;
+        const dy = p.y - my;
+        if (dx * dx + dy * dy < (p.r * 1.4) ** 2) {
+          window.open(p.url, "_blank", "noopener,noreferrer");
+          break;
+        }
+      }
+    };
+
+    // Keyboard: when the canvas is focused, Enter/Space opens the
+    // currently-hovered (active) node's official page.
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      const id = activeRef.current;
+      if (!id) return;
+      const node = nodes.find((n) => n.id === id);
+      if (node) {
+        e.preventDefault();
+        window.open(node.url, "_blank", "noopener,noreferrer");
+      }
+    };
+
     resize();
     raf = requestAnimationFrame(draw);
     window.addEventListener("resize", resize);
     canvas.addEventListener("mousemove", onMove);
     canvas.addEventListener("mouseleave", onLeave);
+    canvas.addEventListener("click", onClick);
+    canvas.addEventListener("keydown", onKey);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -301,6 +400,8 @@ export function ConstellationSection() {
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousemove", onMove);
       canvas.removeEventListener("mouseleave", onLeave);
+      canvas.removeEventListener("click", onClick);
+      canvas.removeEventListener("keydown", onKey);
     };
   }, [reduced]);
 
@@ -319,9 +420,9 @@ export function ConstellationSection() {
               The skill graph
             </h2>
             <p className="mt-3 max-w-md text-muted-foreground">
-              Not a list of bars — a living network. Hover any node to
-              trace what it connects to. Every edge is a real pairing I
-              reach for in production.
+              Not a list of bars — a living network of the tools I
+              reach for. Hover any logo to see its name and connections;
+              click to open its official page.
             </p>
           </div>
           <div className="flex flex-wrap gap-4">
@@ -349,15 +450,16 @@ export function ConstellationSection() {
         >
           <canvas
             ref={canvasRef}
-            className="absolute inset-0 h-full w-full"
-            aria-label="Interactive skill constellation graph"
+            tabIndex={0}
+            className="absolute inset-0 h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-ember/60"
+            aria-label="Interactive skill constellation graph. Hover a technology logo to see its name; click to open its official page."
             role="img"
           />
           {/* Hover readout */}
           <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1.5 backdrop-blur">
             <span className="h-1.5 w-1.5 animate-signal-pulse rounded-full bg-ember" />
             <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              {active ? activeLabel : "hover a node"}
+              {active ? activeLabel : "hover a logo · click to open"}
             </span>
           </div>
           <div className="pointer-events-none absolute bottom-4 right-4 font-mono text-[10px] uppercase tracking-widest text-muted-foreground/60">

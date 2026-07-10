@@ -22,3 +22,12 @@ export function readColorVar(name: string, fallback: string): string {
   }
   return fallback;
 }
+
+const DEVICON_BASE =
+  "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
+
+/** Build a devicon CDN URL for a given icon name + variant. */
+export function deviconUrl(name: string, variant: string): string {
+  return `${DEVICON_BASE}/${name}/${name}-${variant}.svg`;
+}
+

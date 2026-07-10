@@ -28,6 +28,12 @@ export interface SkillNode {
   label: string;
   group: "language" | "frontend" | "backend" | "ai" | "data" | "tooling";
   level: number; // 1-5, drives node radius
+  /** Official site — opened when the node is clicked */
+  url: string;
+  /** devicon CDN path under https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ */
+  icon?: { name: string; variant: string };
+  /** short initials used when no icon is available */
+  initials: string;
 }
 
 export interface SkillEdge {
@@ -93,41 +99,41 @@ export const NAV_LINKS: NavLink[] = [
 
 export const SKILL_NODES: SkillNode[] = [
   // Languages
-  { id: "python", label: "Python", group: "language", level: 5 },
-  { id: "javascript", label: "JavaScript", group: "language", level: 4 },
-  { id: "java", label: "Java", group: "language", level: 3 },
-  { id: "c", label: "C", group: "language", level: 3 },
-  { id: "sql", label: "SQL", group: "language", level: 4 },
-  { id: "php", label: "PHP", group: "language", level: 2 },
+  { id: "python", label: "Python", group: "language", level: 5, url: "https://www.python.org/", icon: { name: "python", variant: "original" }, initials: "Py" },
+  { id: "javascript", label: "JavaScript", group: "language", level: 4, url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", icon: { name: "javascript", variant: "original" }, initials: "JS" },
+  { id: "java", label: "Java", group: "language", level: 3, url: "https://www.java.com/", icon: { name: "java", variant: "original" }, initials: "Jv" },
+  { id: "c", label: "C", group: "language", level: 3, url: "https://en.wikipedia.org/wiki/C_(programming_language)", icon: { name: "c", variant: "original" }, initials: "C" },
+  { id: "sql", label: "SQL", group: "language", level: 4, url: "https://en.wikipedia.org/wiki/SQL", icon: { name: "azuresqldatabase", variant: "original" }, initials: "SQL" },
+  { id: "php", label: "PHP", group: "language", level: 2, url: "https://www.php.net/", icon: { name: "php", variant: "original" }, initials: "PHP" },
   // Frontend
-  { id: "react", label: "React", group: "frontend", level: 5 },
-  { id: "nextjs", label: "Next.js", group: "frontend", level: 4 },
-  { id: "typescript", label: "TypeScript", group: "frontend", level: 4 },
-  { id: "tailwind", label: "Tailwind", group: "frontend", level: 5 },
-  { id: "html", label: "HTML5", group: "frontend", level: 5 },
-  { id: "css", label: "CSS3", group: "frontend", level: 5 },
+  { id: "react", label: "React", group: "frontend", level: 5, url: "https://react.dev/", icon: { name: "react", variant: "original" }, initials: "Re" },
+  { id: "nextjs", label: "Next.js", group: "frontend", level: 4, url: "https://nextjs.org/", icon: { name: "nextjs", variant: "original" }, initials: "Nx" },
+  { id: "typescript", label: "TypeScript", group: "frontend", level: 4, url: "https://www.typescriptlang.org/", icon: { name: "typescript", variant: "original" }, initials: "TS" },
+  { id: "tailwind", label: "Tailwind", group: "frontend", level: 5, url: "https://tailwindcss.com/", icon: { name: "tailwindcss", variant: "original" }, initials: "Tw" },
+  { id: "html", label: "HTML5", group: "frontend", level: 5, url: "https://developer.mozilla.org/en-US/docs/Glossary/HTML5", icon: { name: "html5", variant: "original" }, initials: "H5" },
+  { id: "css", label: "CSS3", group: "frontend", level: 5, url: "https://developer.mozilla.org/en-US/docs/Web/CSS", icon: { name: "css3", variant: "original" }, initials: "C3" },
   // Backend
-  { id: "django", label: "Django", group: "backend", level: 5 },
-  { id: "drf", label: "DRF", group: "backend", level: 4 },
-  { id: "flask", label: "Flask", group: "backend", level: 4 },
-  { id: "rest", label: "REST APIs", group: "backend", level: 5 },
+  { id: "django", label: "Django", group: "backend", level: 5, url: "https://www.djangoproject.com/", icon: { name: "django", variant: "plain" }, initials: "Dj" },
+  { id: "drf", label: "DRF", group: "backend", level: 4, url: "https://www.django-rest-framework.org/", icon: { name: "django", variant: "plain" }, initials: "DRF" },
+  { id: "flask", label: "Flask", group: "backend", level: 4, url: "https://flask.palletsprojects.com/", icon: { name: "flask", variant: "original" }, initials: "Fl" },
+  { id: "rest", label: "REST APIs", group: "backend", level: 5, url: "https://en.wikipedia.org/wiki/Representational_state_transfer", icon: { name: "fastapi", variant: "original" }, initials: "API" },
   // AI / ML
-  { id: "ml", label: "Machine Learning", group: "ai", level: 4 },
-  { id: "dl", label: "Deep Learning", group: "ai", level: 4 },
-  { id: "nlp", label: "NLP", group: "ai", level: 4 },
-  { id: "genai", label: "Generative AI", group: "ai", level: 4 },
-  { id: "pytorch", label: "PyTorch", group: "ai", level: 3 },
-  { id: "sklearn", label: "Scikit-learn", group: "ai", level: 4 },
+  { id: "ml", label: "Machine Learning", group: "ai", level: 4, url: "https://en.wikipedia.org/wiki/Machine_learning", icon: { name: "tensorflow", variant: "original" }, initials: "ML" },
+  { id: "dl", label: "Deep Learning", group: "ai", level: 4, url: "https://en.wikipedia.org/wiki/Deep_learning", icon: { name: "tensorflow", variant: "original" }, initials: "DL" },
+  { id: "nlp", label: "NLP", group: "ai", level: 4, url: "https://en.wikipedia.org/wiki/Natural_language_processing", icon: { name: "tensorflow", variant: "original" }, initials: "NLP" },
+  { id: "genai", label: "Generative AI", group: "ai", level: 4, url: "https://en.wikipedia.org/wiki/Generative_artificial_intelligence", icon: { name: "openai", variant: "original" }, initials: "Gen" },
+  { id: "pytorch", label: "PyTorch", group: "ai", level: 3, url: "https://pytorch.org/", icon: { name: "pytorch", variant: "original" }, initials: "Pt" },
+  { id: "sklearn", label: "Scikit-learn", group: "ai", level: 4, url: "https://scikit-learn.org/", icon: { name: "scikitlearn", variant: "original" }, initials: "Sk" },
   // Data
-  { id: "pandas", label: "Pandas", group: "data", level: 4 },
-  { id: "numpy", label: "NumPy", group: "data", level: 4 },
-  { id: "viz", label: "Data Viz", group: "data", level: 4 },
+  { id: "pandas", label: "Pandas", group: "data", level: 4, url: "https://pandas.pydata.org/", icon: { name: "pandas", variant: "original" }, initials: "Pd" },
+  { id: "numpy", label: "NumPy", group: "data", level: 4, url: "https://numpy.org/", icon: { name: "numpy", variant: "original" }, initials: "Np" },
+  { id: "viz", label: "Data Viz", group: "data", level: 4, url: "https://d3js.org/", icon: { name: "d3js", variant: "original" }, initials: "Viz" },
   // Tooling
-  { id: "git", label: "Git", group: "tooling", level: 4 },
-  { id: "mysql", label: "MySQL", group: "tooling", level: 4 },
-  { id: "linux", label: "Linux", group: "tooling", level: 4 },
-  { id: "wordpress", label: "WordPress", group: "tooling", level: 3 },
-  { id: "webflow", label: "Webflow", group: "tooling", level: 3 },
+  { id: "git", label: "Git", group: "tooling", level: 4, url: "https://git-scm.com/", icon: { name: "git", variant: "original" }, initials: "Git" },
+  { id: "mysql", label: "MySQL", group: "tooling", level: 4, url: "https://www.mysql.com/", icon: { name: "mysql", variant: "original" }, initials: "My" },
+  { id: "linux", label: "Linux", group: "tooling", level: 4, url: "https://www.kernel.org/", icon: { name: "linux", variant: "original" }, initials: "Lx" },
+  { id: "wordpress", label: "WordPress", group: "tooling", level: 3, url: "https://wordpress.org/", icon: { name: "wordpress", variant: "plain" }, initials: "Wp" },
+  { id: "webflow", label: "Webflow", group: "tooling", level: 3, url: "https://webflow.com/", icon: { name: "webflow", variant: "original" }, initials: "Wf" },
 ];
 
 export const SKILL_EDGES: SkillEdge[] = [

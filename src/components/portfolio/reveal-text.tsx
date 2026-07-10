@@ -8,6 +8,8 @@ interface RevealTextProps {
   children: string;
   as?: ElementType;
   className?: string;
+  /** className applied to the inner text-bearing span (use for gradient text) */
+  innerClassName?: string;
   delay?: number;
   /** split into per-word masks */
   word?: boolean;
@@ -22,6 +24,7 @@ export function RevealText({
   children,
   as: Tag = "span",
   className,
+  innerClassName,
   delay = 0,
   word = false,
   once = true,
@@ -37,6 +40,7 @@ export function RevealText({
         style={{ overflow: "hidden", display: "block" }}
       >
         <motion.span
+          className={innerClassName}
           style={{ display: "block", willChange: "transform" }}
           initial={{ y: "115%" }}
           animate={inView ? { y: "0%" } : { y: "115%" }}

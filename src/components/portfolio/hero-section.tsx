@@ -63,22 +63,28 @@ export function HeroSection() {
         </motion.div>
 
         {/* The name — editorial, massive. First name in Fraunces, last
-            name in italic Instrument Serif for a premium accent. */}
+            name in italic Instrument Serif with an ember→aurora gradient
+            painted directly on the text element. */}
         <h1 className="tracking-tightest text-fluid-hero font-medium leading-[0.9]">
           <RevealText
             as="span"
             delay={0.5}
-            className="block font-display text-foreground"
+            className="block"
+            innerClassName="font-display text-foreground"
           >
             {PROFILE.firstName}
           </RevealText>
-          <RevealText
-            as="span"
-            delay={0.66}
-            className="block font-italic-accent text-signal-gradient"
-          >
-            {PROFILE.lastName}
-          </RevealText>
+          <span className="block overflow-hidden">
+            <motion.span
+              className="block font-italic-accent text-ember"
+              style={{ willChange: "transform" }}
+              initial={{ y: "115%" }}
+              animate={inView ? { y: "0%" } : { y: "115%" }}
+              transition={{ duration: DURATION.hero, ease: EASE.signal, delay: 0.66 }}
+            >
+              {PROFILE.lastName}
+            </motion.span>
+          </span>
         </h1>
 
         {/* Philosophy — word-by-word emergence, with "magical" in italic accent */}
