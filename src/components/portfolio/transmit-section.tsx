@@ -119,14 +119,14 @@ export function TransmitSection() {
             <div className="font-mono text-xs tracking-widest text-ember">
               05 / TRANSMIT
             </div>
-            <h2 className="mt-3 font-display text-fluid-2xl font-medium tracking-tightest text-foreground">
-              <RevealText as="span" className="block">
+            <h2 className="mt-3 text-fluid-2xl font-medium tracking-tightest text-foreground">
+              <RevealText as="span" className="block font-display">
                 Let&apos;s build
               </RevealText>
               <RevealText
                 as="span"
                 delay={0.12}
-                className="block text-signal-gradient"
+                className="block font-italic-accent text-signal-gradient"
               >
                 something magical.
               </RevealText>

@@ -62,25 +62,26 @@ export function HeroSection() {
           </span>
         </motion.div>
 
-        {/* The name — editorial, massive */}
-        <h1 className="font-display tracking-tightest text-fluid-hero font-medium leading-[0.9]">
+        {/* The name — editorial, massive. First name in Fraunces, last
+            name in italic Instrument Serif for a premium accent. */}
+        <h1 className="tracking-tightest text-fluid-hero font-medium leading-[0.9]">
           <RevealText
             as="span"
             delay={0.5}
-            className="block text-foreground"
+            className="block font-display text-foreground"
           >
             {PROFILE.firstName}
           </RevealText>
           <RevealText
             as="span"
             delay={0.66}
-            className="block text-signal-gradient"
+            className="block font-italic-accent text-signal-gradient"
           >
             {PROFILE.lastName}
           </RevealText>
         </h1>
 
-        {/* Philosophy — word-by-word emergence */}
+        {/* Philosophy — word-by-word emergence, with "magical" in italic accent */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
@@ -93,8 +94,16 @@ export function HeroSection() {
             delay={1.1}
             className="text-foreground/90"
           >
-            I build intelligent systems that feel magical.
+            I build intelligent systems that feel
           </RevealText>{" "}
+          <motion.span
+            initial={{ opacity: 0, y: 12 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: DURATION.slow, ease: EASE.signal, delay: 1.7 }}
+            className="font-italic-accent text-fluid-lg text-ember"
+          >
+            magical.
+          </motion.span>{" "}
           <motion.span
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}

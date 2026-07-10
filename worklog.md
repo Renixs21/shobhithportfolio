@@ -79,3 +79,26 @@ Stage Summary:
 - Both themes fully functional, toggle persists via next-themes localStorage
 - Glassmorphic top nav matches reference aesthetic (frosted pill, logo+dot, centered links, toggle)
 - All sections audited for light-mode contrast — no broken/disappearing elements
+
+---
+Task ID: 16
+Agent: orchestrator (main)
+Task: Upgrade to premium serif fonts (Fraunces + Instrument Serif) per reference
+
+Work Log:
+- Analyzed reference screenshot: premium humanist SERIF headline with ITALIC emphasis word (the "absurdly" treatment)
+- Added Fraunces (variable serif, opsz + SOFT axes) + Instrument Serif (high-contrast italic) via next/font/google in layout.tsx
+- Fixed Fraunces config: weight must be "variable" when using custom axes (initial 500 error → resolved)
+- Updated globals.css: removed --font-display from @theme inline (was resolving empty, overriding the utility class), kept explicit .font-display utility in @layer utilities pointing to var(--font-fraunces) with font-optical-sizing + variation-settings
+- Added .font-italic-accent utility (Instrument Serif italic) for emphasis words
+- Tuned fluid type scale line-heights/letter-spacing for serif optical sizing
+- Applied fonts globally via existing font-display class (all section headings, nav logo, footer name auto-inherited Fraunces)
+- Added italic emphasis: hero last name "BJ" → italic accent; "magical" in philosophy → italic ember; manifesto "Always ship. Learn in public." → italic; philosophy pull-quote → italic; transmit "something magical." → italic gradient
+- Debugged font-display utility not applying (computed font was system sans) — root cause: @theme inline --font-display token resolved empty, Tailwind generated conflicting .font-display utility; fixed by removing token from @theme inline
+- Browser-verified: hero name "Shobhith" = Fraunces serif, "BJ" = italic serif, "magical" = italic ember, nav logo = serif, manifesto quote + italic line, transmit "something magical." italic — all confirmed in both dark and light mode
+
+Stage Summary:
+- Lint: clean (0 errors)
+- Premium serif typography (Fraunces) across all headings/name/nav/footer; Instrument Serif italic for emphasis words
+- No boring/default fonts remain; editorial magazine feel achieved
+- Readable in both dark and light themes

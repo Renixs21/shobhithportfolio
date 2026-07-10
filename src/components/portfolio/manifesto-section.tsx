@@ -72,7 +72,7 @@ export function ManifestoSection() {
             <RevealText
               as="span"
               delay={0.12}
-              className="block text-muted-foreground"
+              className="block font-italic-accent text-muted-foreground"
             >
               Always ship. Learn in public.
             </RevealText>
@@ -120,7 +120,7 @@ export function ManifestoSection() {
             transition={{ duration: DURATION.slow, ease: EASE.signal }}
             className="mt-16 border-l-2 border-ember/60 pl-6"
           >
-            <p className="font-display text-fluid-lg italic text-foreground/90">
+            <p className="font-italic-accent text-fluid-lg text-foreground/90">
               “{PROFILE.philosophy}”
             </p>
             <div className="mt-4 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
