@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { readColorVar } from "@/lib/color-utils";
 
 interface ParticleFieldProps {
   className?: string;
@@ -86,8 +87,20 @@ export function ParticleField({ className }: ParticleFieldProps) {
       );
     };
 
-    const ember = "255, 138, 76";
-    const aurora = "94, 224, 184";
+    // Resolve the signal colors from the active theme tokens so the
+    // field reads correctly in both dark and light modes.
+    let ember = readColorVar("--ember", "255, 138, 76");
+    let aurora = readColorVar("--aurora", "94, 224, 184");
+
+    // Re-read when the theme changes.
+    const themeObserver = new MutationObserver(() => {
+      ember = readColorVar("--ember", "255, 138, 76");
+      aurora = readColorVar("--aurora", "94, 224, 184");
+    });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     const draw = (now: number) => {
       t = (now - start) / 1000;
@@ -211,6 +224,7 @@ export function ParticleField({ className }: ParticleFieldProps) {
 
     return () => {
       cancelAnimationFrame(raf);
+      themeObserver.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseout", onLeave);

@@ -51,3 +51,31 @@ Stage Summary:
 - Dev server: running on :3000, all routes 200, POST /api/contact 200
 - All 6 sections verified rendering + interactive in browser (desktop + mobile)
 - Portfolio is original: "SIGNAL / STATIC" concept, ember/aurora duotone on obsidian, editorial+dark+playground+storytelling synthesis — no copied layouts/animations/palettes
+
+---
+Task ID: 15
+Agent: orchestrator (main)
+Task: Add glassmorphic top navbar with dark/light mode toggle (per reference image)
+
+Work Log:
+- Analyzed reference image: frosted glass floating pill nav, logo "Shobhith." with dot accent, centered WORK/ABOUT/SKILLS/PATH/CONTACT links, sun/moon theme toggle on right
+- Restructured globals.css: `:root,.dark` = dark tokens (default), added full `.light` token block (warm paper background, tuned ember/aurora for contrast, light glass, light scrollbar)
+- Made body atmosphere, ::selection, scrollbar theme-adaptive via `.light` overrides
+- Added `.glass-nav` utility (20px blur + saturate, glass-border, inset highlight, theme-aware shadow)
+- Made `.grid-lines` use foreground token via color-mix (adapts to both themes)
+- Wired next-themes: created ThemeProvider, set attribute="class" defaultTheme="dark" in layout.tsx
+- Built ThemeToggle (sun/moon cross-fade rotate via AnimatePresence), used useIsClient hook (useSyncExternalStore) to avoid setState-in-effect lint error
+- Built TopNav: floating glass pill, "Shobhith" logo with ember dot, scroll-spy active pill (layoutId), ⌘K trigger, theme toggle, mobile hamburger → glass dropdown sheet
+- Removed old AmbientNav (replaced by TopNav), removed redundant hero status bar, added pt-28 to hero to clear nav
+- Created color-utils.ts readColorVar() — reads CSS color tokens as RGB strings for canvas
+- Refactored ParticleField + Constellation canvas to read --ember/--aurora from theme + re-read on theme change via MutationObserver
+- Converted all hardcoded oklch() accent colors to var(--ember)/var(--aurora) across: section-divider, scroll-progress, trajectory rail/badges, builds accentColor/StatusBadge/spatial cards/grid spotlight, constellation legend, cursor-follower, transmit celebration overlay
+- Replaced bg-obsidian/40 input/stack backgrounds with bg-surface/60 for light-mode correctness
+- Made hero vignette use color-mix(background) instead of hardcoded dark
+- Browser-verified: dark navbar glass, toggle→light (paper bg, frosted light navbar, readable text), constellation+builds+contact readable in light, theme persists across reload, mobile hamburger menu works in light, toggle back to dark works
+
+Stage Summary:
+- Lint: clean (0 errors)
+- Both themes fully functional, toggle persists via next-themes localStorage
+- Glassmorphic top nav matches reference aesthetic (frosted pill, logo+dot, centered links, toggle)
+- All sections audited for light-mode contrast — no broken/disappearing elements

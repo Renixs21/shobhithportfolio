@@ -25,7 +25,8 @@ const MODES: { id: Mode; label: string; icon: LucideIcon; hint: string }[] = [
 ];
 
 function accentColor(accent: Project["accent"]) {
-  return accent === "ember" ? "oklch(0.74 0.2 45)" : "oklch(0.82 0.13 165)";
+  // Use the theme tokens so colors adapt to light/dark mode.
+  return accent === "ember" ? "var(--ember)" : "var(--aurora)";
 }
 function accentSoft(accent: Project["accent"]) {
   return accent === "ember" ? "bg-ember-soft" : "bg-aurora-soft";
@@ -33,15 +34,18 @@ function accentSoft(accent: Project["accent"]) {
 
 function StatusBadge({ status }: { status: Project["status"] }) {
   const map = {
-    shipped: { label: "Shipped", color: "oklch(0.82 0.13 165)" },
-    exploration: { label: "Exploration", color: "oklch(0.8 0.16 95)" },
-    collaboration: { label: "Collaboration", color: "oklch(0.74 0.2 45)" },
+    shipped: { label: "Shipped", color: "var(--aurora)" },
+    exploration: { label: "Exploration", color: "oklch(0.78 0.16 90)" },
+    collaboration: { label: "Collaboration", color: "var(--ember)" },
   } as const;
   const s = map[status];
   return (
     <span
       className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest"
-      style={{ borderColor: `${s.color}40`, color: s.color }}
+      style={{
+        borderColor: `color-mix(in oklch, ${s.color} 30%, transparent)`,
+        color: s.color,
+      }}
     >
       <span
         className="h-1.5 w-1.5 rounded-full"
@@ -191,7 +195,7 @@ function ImmersiveMode() {
                 {project.stack.map((s) => (
                   <span
                     key={s}
-                    className="rounded-full border border-border bg-obsidian/40 px-3 py-1 font-mono text-[11px] text-foreground/80"
+                    className="rounded-full border border-border bg-surface/60 px-3 py-1 font-mono text-[11px] text-foreground/80"
                   >
                     {s}
                   </span>
@@ -285,20 +289,20 @@ function SpatialMode() {
                     : `blur(${abs * 1.5}px)`,
                 }}
                 transition={SPRING.gentle}
-                className="absolute h-[24rem] w-72 shrink-0 overflow-hidden rounded-2xl border bg-obsidian/70 text-left"
+                className="absolute h-[24rem] w-72 shrink-0 overflow-hidden rounded-2xl border bg-surface/70 text-left"
                 style={{
                   borderColor: isActive ? pc : "var(--hairline)",
                   transformStyle: "preserve-3d",
                   boxShadow: isActive
-                    ? `0 30px 80px -20px ${pc.slice(0, -2)}33)`
-                    : "0 10px 30px -10px rgba(0,0,0,0.5)",
+                    ? `0 30px 80px -20px color-mix(in oklch, ${pc} 22%, transparent)`
+                    : "0 10px 30px -10px color-mix(in oklch, var(--foreground) 18%, transparent)",
                 }}
                 aria-label={`Focus ${p.name}`}
               >
                 <div
                   className="relative h-40 overflow-hidden border-b border-border"
                   style={{
-                    background: `radial-gradient(120% 80% at 30% 20%, ${pc.slice(0, -2)}22), transparent), linear-gradient(135deg, oklch(0.16 0.01 75), oklch(0.12 0.008 75))`,
+                    background: `radial-gradient(120% 80% at 30% 20%, color-mix(in oklch, ${pc} 22%, transparent), transparent), linear-gradient(135deg, var(--surface), var(--surface-2))`,
                   }}
                 >
                   <div className="absolute inset-0 grid-lines opacity-30" />
@@ -370,7 +374,7 @@ function GridMode() {
           <SpotlightCard
             key={p.id}
             className="rounded-2xl border border-border bg-surface/40"
-            color={`${c.slice(0, -2)}1f)`}
+            color={`color-mix(in oklch, ${c} 16%, transparent)`}
           >
             <button
               onClick={() => setExpanded(isOpen ? null : p.id)}

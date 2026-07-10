@@ -23,9 +23,7 @@ function MilestoneCard({ m, index }: { m: Milestone; index: number }) {
   const isLeft = index % 2 === 0;
   const Icon = KIND_ICON[m.kind];
   const accent =
-    m.accent === "ember"
-      ? "oklch(0.74 0.2 45)"
-      : "oklch(0.82 0.13 165)";
+    m.accent === "ember" ? "var(--ember)" : "var(--aurora)";
   const accentSoft =
     m.accent === "ember" ? "bg-ember-soft" : "bg-aurora-soft";
 
@@ -78,9 +76,9 @@ function MilestoneCard({ m, index }: { m: Milestone; index: number }) {
             <span
               className="rounded-full border px-2.5 py-1 font-mono text-[11px] font-medium"
               style={{
-                borderColor: `${accent}40`,
+                borderColor: `color-mix(in oklch, ${accent} 30%, transparent)`,
                 color: accent,
-                backgroundColor: `${accent.slice(0, -2)}0d)`,
+                backgroundColor: `color-mix(in oklch, ${accent} 8%, transparent)`,
               }}
             >
               {m.metric}
@@ -143,7 +141,7 @@ export function TrajectorySection() {
                 className="h-full w-full"
                 style={{
                   background:
-                    "linear-gradient(180deg, oklch(0.74 0.2 45), oklch(0.82 0.13 165))",
+                    "linear-gradient(180deg, var(--ember), var(--aurora))",
                 }}
               />
             </motion.div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { CursorFollower } from "@/components/portfolio/cursor-follower";
 import { ScrollProgress } from "@/components/portfolio/scroll-progress";
-import { AmbientNav } from "@/components/portfolio/ambient-nav";
+import { TopNav } from "@/components/portfolio/top-nav";
 import { CommandPalette } from "@/components/portfolio/command-palette";
 import { KonamiEasterEgg } from "@/components/portfolio/konami-easter-egg";
 import { HeroSection } from "@/components/portfolio/hero-section";
@@ -34,7 +34,7 @@ export default function Home() {
     <div className="relative flex min-h-screen flex-col bg-background">
       <CursorFollower />
       <ScrollProgress />
-      <AmbientNav onOpenCommand={() => setCmdOpen(true)} />
+      <TopNav onOpenCommand={() => setCmdOpen(true)} />
       <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
       <KonamiEasterEgg />
 

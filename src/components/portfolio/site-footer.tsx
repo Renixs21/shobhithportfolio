@@ -10,7 +10,7 @@ export function SiteFooter() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <footer className="relative mt-auto border-t border-border bg-obsidian/60">
+    <footer className="relative mt-auto border-t border-border bg-surface/60">
       <div className="mx-auto w-full max-w-7xl px-6 py-14 md:px-10">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           {/* Identity */}

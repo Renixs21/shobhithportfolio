@@ -64,7 +64,8 @@
   --radius-2xl: calc(var(--radius) + 10px);
 }
 
-:root {
+:root,
+.dark {
   --radius: 0.875rem;
 
   /* OBSIDIAN base — warm-tinted near-black */
@@ -99,6 +100,7 @@
   --surface: oklch(0.17 0.012 75);
   --surface-2: oklch(0.2 0.014 75);
   --glass: oklch(0.2 0.014 75 / 55%);
+  --glass-border: oklch(1 0 0 / 14%);
   --hairline: oklch(1 0 0 / 8%);
 
   --chart-1: oklch(0.74 0.2 45);
@@ -117,26 +119,59 @@
   --sidebar-ring: oklch(0.72 0.19 45 / 60%);
 }
 
-.dark {
-  /* The site is dark-first; dark = same tokens (kept for theme parity) */
-  --background: oklch(0.13 0.008 75);
-  --foreground: oklch(0.94 0.012 80);
-  --card: oklch(0.16 0.01 75);
-  --card-foreground: oklch(0.94 0.012 80);
-  --popover: oklch(0.15 0.01 75);
-  --popover-foreground: oklch(0.94 0.012 80);
-  --primary: oklch(0.74 0.2 45);
-  --primary-foreground: oklch(0.14 0.02 50);
-  --secondary: oklch(0.22 0.015 75);
-  --secondary-foreground: oklch(0.94 0.012 80);
-  --muted: oklch(0.2 0.012 75);
-  --muted-foreground: oklch(0.62 0.018 75);
-  --accent: oklch(0.82 0.13 165);
-  --accent-foreground: oklch(0.14 0.02 165);
-  --destructive: oklch(0.62 0.22 22);
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.72 0.19 45 / 60%);
+/* ============================================================
+   LIGHT theme — warm paper with the same ember/aurora duotone.
+   The glass elements become bright frosted panels.
+   ============================================================ */
+.light {
+  --background: oklch(0.975 0.006 85);
+  --foreground: oklch(0.18 0.012 75);
+  --card: oklch(0.99 0.004 85);
+  --card-foreground: oklch(0.18 0.012 75);
+  --popover: oklch(0.99 0.004 85);
+  --popover-foreground: oklch(0.18 0.012 75);
+
+  /* EMBER stays vivid against paper */
+  --primary: oklch(0.6 0.2 42);
+  --primary-foreground: oklch(0.98 0.01 80);
+  --secondary: oklch(0.94 0.008 80);
+  --secondary-foreground: oklch(0.2 0.012 75);
+  --muted: oklch(0.95 0.006 80);
+  --muted-foreground: oklch(0.42 0.014 75);
+  --accent: oklch(0.52 0.13 168);
+  --accent-foreground: oklch(0.98 0.01 80);
+  --destructive: oklch(0.55 0.22 22);
+
+  --border: oklch(0.2 0.012 75 / 12%);
+  --input: oklch(0.2 0.012 75 / 16%);
+  --ring: oklch(0.6 0.2 42 / 50%);
+
+  /* Signal tokens — tuned for paper contrast */
+  --ember: oklch(0.6 0.2 42);
+  --ember-soft: oklch(0.6 0.2 42 / 12%);
+  --aurora: oklch(0.52 0.13 168);
+  --aurora-soft: oklch(0.52 0.13 168 / 12%);
+  --obsidian: oklch(0.16 0.01 75);
+  --surface: oklch(0.97 0.006 80);
+  --surface-2: oklch(0.93 0.008 80);
+  --glass: oklch(1 0 0 / 62%);
+  --glass-border: oklch(0.2 0.012 75 / 10%);
+  --hairline: oklch(0.2 0.012 75 / 10%);
+
+  --chart-1: oklch(0.6 0.2 42);
+  --chart-2: oklch(0.52 0.13 168);
+  --chart-3: oklch(0.68 0.16 90);
+  --chart-4: oklch(0.55 0.16 200);
+  --chart-5: oklch(0.58 0.19 340);
+
+  --sidebar: oklch(0.97 0.006 80);
+  --sidebar-foreground: oklch(0.18 0.012 75);
+  --sidebar-primary: oklch(0.6 0.2 42);
+  --sidebar-primary-foreground: oklch(0.98 0.01 80);
+  --sidebar-accent: oklch(0.94 0.008 80);
+  --sidebar-accent-foreground: oklch(0.2 0.012 75);
+  --sidebar-border: oklch(0.2 0.012 75 / 12%);
+  --sidebar-ring: oklch(0.6 0.2 42 / 50%);
 }
 
 @layer base {
@@ -161,11 +196,24 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
     overflow-x: hidden;
+    transition: background-color 0.5s ease, color 0.4s ease;
+  }
+
+  /* Light-mode atmosphere — softer, paper-warm */
+  .light body {
+    background-image:
+      radial-gradient(120% 80% at 12% -8%, oklch(0.6 0.2 42 / 0.10), transparent 55%),
+      radial-gradient(110% 70% at 92% 4%, oklch(0.52 0.13 168 / 0.08), transparent 52%),
+      radial-gradient(80% 60% at 50% 120%, oklch(0.6 0.2 42 / 0.05), transparent 60%);
   }
 
   ::selection {
     background: oklch(0.74 0.2 45 / 30%);
     color: oklch(0.98 0.01 80);
+  }
+  .light ::selection {
+    background: oklch(0.6 0.2 42 / 22%);
+    color: oklch(0.16 0.01 75);
   }
 
   /* Custom scrollbar — slim, signal-tinted */
@@ -177,6 +225,12 @@
     border: 2px solid var(--obsidian);
   }
   ::-webkit-scrollbar-thumb:hover { background: oklch(0.74 0.2 45 / 50%); }
+  .light ::-webkit-scrollbar-track { background: var(--surface); }
+  .light ::-webkit-scrollbar-thumb {
+    background: oklch(0.2 0.012 75 / 18%);
+    border: 2px solid var(--surface);
+  }
+  .light ::-webkit-scrollbar-thumb:hover { background: oklch(0.6 0.2 42 / 45%); }
 
   :focus-visible {
     outline: 2px solid oklch(0.74 0.2 45 / 70%);
@@ -212,10 +266,26 @@
     border: 1px solid var(--hairline);
   }
   .glass-strong {
-    background: oklch(0.17 0.012 75 / 78%);
+    background: var(--glass);
     backdrop-filter: blur(24px) saturate(150%);
     -webkit-backdrop-filter: blur(24px) saturate(150%);
-    border: 1px solid var(--hairline);
+    border: 1px solid var(--glass-border);
+  }
+  /* Top navigation glass — heavier blur + highlight edge, like the
+     reference image: a frosted panel floating above the content. */
+  .glass-nav {
+    background: var(--glass);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 8px 32px -8px oklch(0 0 0 / 28%),
+      inset 0 1px 0 0 oklch(1 0 0 / 8%);
+  }
+  .light .glass-nav {
+    box-shadow:
+      0 8px 32px -10px oklch(0.2 0.012 75 / 18%),
+      inset 0 1px 0 0 oklch(1 0 0 / 60%);
   }
 
   /* Gradient text — ember→aurora duotone */
@@ -258,11 +328,11 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* Grid lines backdrop */
+  /* Grid lines backdrop — uses foreground token so it adapts to theme */
   .grid-lines {
     background-image:
-      linear-gradient(to right, oklch(1 0 0 / 4%) 1px, transparent 1px),
-      linear-gradient(to bottom, oklch(1 0 0 / 4%) 1px, transparent 1px);
+      linear-gradient(to right, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px);
     background-size: 64px 64px;
   }
 

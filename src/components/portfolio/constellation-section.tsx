@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { readColorVar } from "@/lib/color-utils";
 import {
   SKILL_NODES,
   SKILL_EDGES,
@@ -20,14 +21,13 @@ interface SimNode extends SkillNode {
   glow: number;
 }
 
-const GROUP_COLORS: Record<string, string> = {
-  language: "255, 138, 76", // ember
-  frontend: "94, 224, 184", // aurora
-  backend: "255, 138, 76",
-  ai: "94, 224, 184",
-  data: "255, 138, 76",
-  tooling: "94, 224, 184",
-};
+// Map each skill group to a signal color token. Resolved live from the
+// theme so the graph reads correctly in both dark and light modes.
+const EMBER_FALLBACK = "255, 138, 76";
+const AURORA_FALLBACK = "94, 224, 184";
+const EMBER_GROUPS = new Set(["language", "backend", "data"]);
+const groupColor = (group: string, ember: string, aurora: string) =>
+  EMBER_GROUPS.has(group) ? ember : aurora;
 
 /**
  * A living skill constellation. Nodes are clustered by group, drift on
@@ -60,6 +60,18 @@ export function ConstellationSection() {
     let raf = 0;
     let t = 0;
     const start = performance.now();
+
+    // Resolve signal colors from the active theme; re-read on theme change.
+    let ember = readColorVar("--ember", EMBER_FALLBACK);
+    let aurora = readColorVar("--aurora", AURORA_FALLBACK);
+    const themeObserver = new MutationObserver(() => {
+      ember = readColorVar("--ember", EMBER_FALLBACK);
+      aurora = readColorVar("--aurora", AURORA_FALLBACK);
+    });
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
     const mouse = { x: -9999, y: -9999, active: false };
 
     let nodes: SimNode[] = [];
@@ -169,10 +181,10 @@ export function ConstellationSection() {
           hovered && (hovered.id === e.from || hovered.id === e.to);
         const baseAlpha = involved ? 0.6 : hovered ? 0.05 : 0.16;
         const col = involved
-          ? "255, 138, 76"
+          ? ember
           : a.group === b.group
-          ? GROUP_COLORS[a.group]
-          : "180, 180, 180";
+          ? groupColor(a.group, ember, aurora)
+          : "160, 160, 160";
         ctx.strokeStyle = `rgba(${col}, ${baseAlpha})`;
         ctx.lineWidth = involved ? 1.4 : 0.7;
         ctx.beginPath();
@@ -193,14 +205,14 @@ export function ConstellationSection() {
         const groupRingR = Math.min(w, h) * (isMobile ? 0.34 : 0.32);
         const lx = cx + Math.cos(ga) * (groupRingR + 34);
         const ly = cy + Math.sin(ga) * (groupRingR + 34);
-        const col = g.accent === "ember" ? "255, 138, 76" : "94, 224, 184";
+        const col = g.accent === "ember" ? ember : aurora;
         ctx.fillStyle = `rgba(${col}, 0.7)`;
         ctx.fillText(g.label.toUpperCase(), lx, ly);
       });
 
       // Draw nodes
       for (const p of nodes) {
-        const col = GROUP_COLORS[p.group];
+        const col = groupColor(p.group, ember, aurora);
         const isHovered = hovered === p;
         const r = p.r * (isHovered ? 1.5 : 1) * (0.8 + p.glow * 0.4);
 
@@ -285,6 +297,7 @@ export function ConstellationSection() {
 
     return () => {
       cancelAnimationFrame(raf);
+      themeObserver.disconnect();
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("mousemove", onMove);
       canvas.removeEventListener("mouseleave", onLeave);
@@ -321,9 +334,7 @@ export function ConstellationSection() {
                   className="h-2 w-2 rounded-full"
                   style={{
                     backgroundColor:
-                      g.accent === "ember"
-                        ? "oklch(0.74 0.2 45)"
-                        : "oklch(0.82 0.13 165)",
+                      g.accent === "ember" ? "var(--ember)" : "var(--aurora)",
                   }}
                 />
                 {g.label}
@@ -343,7 +354,7 @@ export function ConstellationSection() {
             role="img"
           />
           {/* Hover readout */}
-          <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 rounded-full border border-border bg-obsidian/70 px-3 py-1.5 backdrop-blur">
+          <div className="pointer-events-none absolute left-4 top-4 flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1.5 backdrop-blur">
             <span className="h-1.5 w-1.5 animate-signal-pulse rounded-full bg-ember" />
             <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               {active ? activeLabel : "hover a node"}

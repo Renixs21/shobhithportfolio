@@ -89,10 +89,10 @@ export function CursorFollower() {
         className="absolute left-0 top-0 rounded-full border transition-[width,height,background-color,border-color] duration-300"
         style={{
           borderColor: hovering
-            ? "oklch(0.82 0.13 165 / 80%)"
-            : "oklch(0.74 0.2 45 / 55%)",
+            ? "color-mix(in oklch, var(--aurora) 80%, transparent)"
+            : "color-mix(in oklch, var(--ember) 55%, transparent)",
           backgroundColor: hovering
-            ? "oklch(0.82 0.13 165 / 10%)"
+            ? "color-mix(in oklch, var(--aurora) 10%, transparent)"
             : "transparent",
           width: down ? "1.5rem" : hovering ? "3rem" : "2rem",
           height: down ? "1.5rem" : hovering ? "3rem" : "2rem",
@@ -102,8 +102,9 @@ export function CursorFollower() {
         ref={dotRef}
         className="absolute left-0 top-0 h-1.5 w-1.5 rounded-full"
         style={{
-          backgroundColor: "oklch(0.74 0.2 45)",
-          boxShadow: "0 0 12px oklch(0.74 0.2 45 / 80%)",
+          backgroundColor: "var(--ember)",
+          boxShadow:
+            "0 0 12px color-mix(in oklch, var(--ember) 80%, transparent)",
         }}
       />
       <div

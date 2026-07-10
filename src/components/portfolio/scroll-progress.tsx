@@ -24,8 +24,8 @@ export function ScrollProgress() {
         className="h-full w-full"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.74 0.2 45), oklch(0.8 0.16 95), oklch(0.82 0.13 165))",
-          boxShadow: "0 0 12px oklch(0.74 0.2 45 / 60%)",
+            "linear-gradient(90deg, var(--ember), oklch(0.8 0.16 95), var(--aurora))",
+          boxShadow: "0 0 12px color-mix(in oklch, var(--ember) 60%, transparent)",
         }}
       />
     </motion.div>

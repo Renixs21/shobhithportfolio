@@ -23,9 +23,7 @@ export function SectionDivider({
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px" });
   const accentColor =
-    accent === "ember"
-      ? "oklch(0.74 0.2 45)"
-      : "oklch(0.82 0.13 165)";
+    accent === "ember" ? "var(--ember)" : "var(--aurora)";
 
   return (
     <div

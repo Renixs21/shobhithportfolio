@@ -34,41 +34,20 @@ export function HeroSection() {
         <ParticleField className="absolute inset-0" />
       </motion.div>
 
-      {/* Vignette + grid overlay */}
+      {/* Vignette + grid overlay — fades to the page background at edges */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 40%, transparent 40%, oklch(0.1 0.008 75 / 0.6) 100%)",
+            "radial-gradient(120% 90% at 50% 40%, transparent 40%, color-mix(in oklch, var(--background) 75%, transparent) 100%)",
         }}
       />
       <div className="grid-lines pointer-events-none absolute inset-0 opacity-[0.4]" />
 
-      {/* Top status bar */}
-      <motion.header
-        initial={{ opacity: 0, y: -16 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: DURATION.normal, ease: EASE.signal, delay: 0.2 }}
-        className="relative z-10 mx-auto flex w-full max-w-7xl items-center justify-between px-6 pt-8 md:px-10"
-      >
-        <div className="flex items-center gap-3">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-ember" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-ember" />
-          </span>
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
-            {PROFILE.availability}
-          </span>
-        </div>
-        <div className="hidden font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground md:block">
-          {PROFILE.location}
-        </div>
-      </motion.header>
-
-      {/* Main content */}
+      {/* Main content — padded to clear the floating top nav */}
       <motion.div
         style={{ y, opacity }}
-        className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 py-16 md:px-10"
+        className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-16 pt-28 md:px-10"
       >
         {/* Eyebrow */}
         <motion.div

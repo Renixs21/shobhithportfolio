@@ -199,7 +199,7 @@ export function TransmitSection() {
                       setForm({ ...form, name: e.target.value })
                     }
                     placeholder="Ada Lovelace"
-                    className="w-full rounded-xl border border-border bg-obsidian/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
                     disabled={status === "sending" || status === "sent"}
                   />
                 </FieldShell>
@@ -212,7 +212,7 @@ export function TransmitSection() {
                       setForm({ ...form, email: e.target.value })
                     }
                     placeholder="ada@analytical.engine"
-                    className="w-full rounded-xl border border-border bg-obsidian/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
+                    className="w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
                     disabled={status === "sending" || status === "sent"}
                   />
                 </FieldShell>
@@ -225,7 +225,7 @@ export function TransmitSection() {
                     }
                     rows={4}
                     placeholder="What are you building, and where do I fit in?"
-                    className="w-full resize-none rounded-xl border border-border bg-obsidian/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
+                    className="w-full resize-none rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
                     disabled={status === "sending" || status === "sent"}
                   />
                 </FieldShell>
@@ -259,7 +259,7 @@ export function TransmitSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 z-20 grid place-items-center rounded-3xl bg-obsidian/90 backdrop-blur"
+                    className="absolute inset-0 z-20 grid place-items-center rounded-3xl bg-background/90 backdrop-blur"
                   >
                     <div className="relative text-center">
                       {/* burst particles */}
