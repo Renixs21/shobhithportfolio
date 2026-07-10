@@ -345,3 +345,24 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Transmit: name left + email right beside the headline; all emails updated to shobhithbj@gmail.com
+
+---
+Task ID: 30
+Agent: orchestrator (main)
+Task: Rework custom cursor — concentric dot+ring, smooth grow on hover over clickable only
+
+Work Log:
+- Analyzed 2 reference screenshots: default = small ember dot enclosed within thin ember ring (concentric); hover over clickable = the whole ball grows smoothly, stays ember
+- Rewrote cursor-follower.tsx:
+  - Single wrapper carries the shared eased position so dot + ring move together (always concentric — fixed the old offset where dot tracked instantly while ring lagged)
+  - Both dot + ring use transition-[width,height] duration-300 ease-out for smooth scale animation
+  - data-state attribute on wrapper ("default" | "hover") drives the scale via injected <style> — ring grows 2.25rem→3.5rem, dot grows 0.4rem→0.55rem on hover
+  - Hover detection limited to actual clickable elements: a, button, [role=button], input, textarea, select, [data-cursor] (NOT everywhere — text/empty space stays default size)
+  - data-pressed shrinks slightly for click feedback
+  - Stays ember colored in both states (no more ember→aurora color swap)
+  - Label pill (data-cursor-label) still works, positioned below the ball
+- Browser-verified: default = small concentric dot+ring; hover over button = grows smoothly, stays concentric + ember; non-clickable area = stays small; dot always centered in ring
+
+Stage Summary:
+- Lint: clean
+- Cursor now: small ball inside ring (concentric), grows smoothly ONLY over clickable elements, stays ember
