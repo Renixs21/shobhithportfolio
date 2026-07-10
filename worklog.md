@@ -366,3 +366,25 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Cursor now: small ball inside ring (concentric), grows smoothly ONLY over clickable elements, stays ember
+
+---
+Task ID: 31
+Agent: orchestrator (main)
+Task: Cursor — smooth rescale (transform: scale) from small to big on hover
+
+Work Log:
+- User feedback: previous width/height-based growth snapped; need smooth RESCALE from small to big
+- Rewrote cursor to use transform: scale() eased via rAF (not CSS width/height transitions):
+  - Ring + dot have FIXED base sizes (2.25rem ring, 0.4rem dot)
+  - A shared `scale` value eases toward `targetScale` each frame (scale += (target - scale) * 0.18) → buttery continuous rescale
+  - Default scale=1 (small), hover over clickable scale=1.6 (big), press scale=0.8
+  - Both ring + dot get the same scale transform so they rescale together, dot stays centered (concentric)
+  - Wrapper handles position (translate3d), ring/dot handle scale — no transform conflicts
+  - Hover detection limited to clickable: a, button, [role=button], input, textarea, select, [data-cursor]
+  - Stays ember colored in all states
+- Removed injected <style> !important overrides (the snap culprit)
+- Browser-verified: default = small concentric dot+ring; hover over button = smoothly rescales bigger, dot stays centered, ember colored
+
+Stage Summary:
+- Lint: clean
+- Cursor now smoothly RESCALES (transform: scale, rAF-eased) from small→big only over clickable elements

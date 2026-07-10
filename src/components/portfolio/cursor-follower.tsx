@@ -6,37 +6,37 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 /**
  * A concentric custom cursor — a small ember ball enclosed within a
- * thin ember ring. The pair move together (always centered) and grow
- * smoothly when hovering interactive/clickable elements. Disabled on
- * touch devices and when reduced motion is requested.
- *
- * Matches the reference: default = small dot inside thin ring; hover
- * over clickable = the whole ball grows with a smooth animation.
+ * thin ember ring. The pair move together (always centered) and the
+ * whole ball smoothly RESCALES (transform: scale) from small to big
+ * when hovering interactive/clickable elements. Disabled on touch
+ * devices and when reduced motion is requested.
  */
 export function CursorFollower() {
   const reduced = useReducedMotion();
   const finePointer = useMediaQuery("(hover: hover) and (pointer: fine)");
   const enabled = finePointer && !reduced;
   const wrapRef = useRef<HTMLDivElement>(null);
-  const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState<string | null>(null);
 
   useEffect(() => {
     if (!enabled) return;
     const wrap = wrapRef.current;
-    const dot = dotRef.current;
     const ring = ringRef.current;
-    if (!wrap || !dot || !ring) return;
+    const dot = dotRef.current;
+    if (!wrap || !ring || !dot) return;
 
-    // The target cursor position (exact pointer).
+    // Target cursor position (exact pointer).
     let tx = window.innerWidth / 2;
     let ty = window.innerHeight / 2;
-    // The smoothed position (both dot + ring share this so they stay
-    // perfectly concentric while easing toward the pointer).
+    // Smoothed position (shared by ring + dot so they stay concentric).
     let cx = tx;
     let cy = ty;
+    // Current scale (eased toward target for a smooth rescale).
+    let scale = 1;
+    let targetScale = 1;
     let raf = 0;
 
     const onMove = (e: MouseEvent) => {
@@ -48,27 +48,36 @@ export function CursorFollower() {
         'a, button, [role="button"], input, textarea, select, [data-cursor]'
       );
       if (interactive) {
-        wrap.setAttribute("data-state", "hover");
+        targetScale = 1.6;
         const l = interactive.getAttribute("data-cursor-label");
         setLabel(l);
       } else {
-        wrap.setAttribute("data-state", "default");
+        targetScale = 1;
         setLabel(null);
       }
     };
 
-    const onDown = () => wrap.setAttribute("data-pressed", "true");
-    const onUp = () => wrap.removeAttribute("data-pressed");
+    const onDown = () => {
+      targetScale = 0.8;
+    };
+    const onUp = () => {
+      targetScale = 1;
+    };
 
     const tick = () => {
-      // Ease both toward the target — dot and ring share the same
-      // position so the dot always sits dead-center in the ring.
+      // Ease position toward the pointer — ring + dot share this so
+      // the dot always sits dead-center in the ring.
       cx += (tx - cx) * 0.22;
       cy += (ty - cy) * 0.22;
-      const tf = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
-      wrap.style.transform = tf;
+      // Ease scale toward target for a smooth small↔big rescale.
+      scale += (targetScale - scale) * 0.18;
+
+      wrap.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+      const s = scale.toFixed(4);
+      ring.style.transform = `translate(-50%, -50%) scale(${s})`;
+      dot.style.transform = `translate(-50%, -50%) scale(${s})`;
       if (labelRef.current) {
-        labelRef.current.style.transform = `${tf} translateY(2.25rem) translate(-50%, 0)`;
+        labelRef.current.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, 0) translateY(2.25rem)`;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -92,35 +101,35 @@ export function CursorFollower() {
       className="pointer-events-none fixed inset-0 z-[100] hidden md:block"
       aria-hidden="true"
     >
-      {/* Wrapper carries the shared position so dot + ring stay concentric.
-          data-state drives the smooth scale animation on hover. */}
+      {/* Wrapper carries the shared position so dot + ring stay concentric. */}
       <div
         ref={wrapRef}
-        data-state="default"
-        className="absolute left-0 top-0 transition-transform duration-300 ease-out"
+        className="absolute left-0 top-0"
         style={{ willChange: "transform" }}
       >
-        {/* Outer ring — thin ember circle */}
+        {/* Outer ring — thin ember circle (fixed base size, scales via transform) */}
         <div
           ref={ringRef}
-          className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full border transition-[width,height,border-width] duration-300 ease-out"
+          className="absolute left-0 top-0 rounded-full border"
           style={{
             width: "2.25rem",
             height: "2.25rem",
             borderWidth: "1.5px",
             borderColor: "color-mix(in oklch, var(--ember) 70%, transparent)",
+            willChange: "transform",
           }}
         />
         {/* Inner ball — small filled ember dot, centered inside the ring */}
         <div
           ref={dotRef}
-          className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full transition-[width,height] duration-300 ease-out"
+          className="absolute left-0 top-0 rounded-full"
           style={{
             width: "0.4rem",
             height: "0.4rem",
             backgroundColor: "var(--ember)",
             boxShadow:
               "0 0 10px color-mix(in oklch, var(--ember) 80%, transparent)",
+            willChange: "transform",
           }}
         />
       </div>
@@ -133,27 +142,6 @@ export function CursorFollower() {
       >
         {label}
       </div>
-
-      {/* Hover-state scaling: when over a clickable element, the ring +
-          dot both grow smoothly. Pressed shrinks slightly for feedback. */}
-      <style>{`
-        [data-state="hover"] > div {
-          width: 3.5rem !important;
-          height: 3.5rem !important;
-        }
-        [data-state="hover"] > div:nth-child(2) {
-          width: 0.55rem !important;
-          height: 0.55rem !important;
-        }
-        [data-state="default"][data-pressed] > div {
-          width: 1.75rem !important;
-          height: 1.75rem !important;
-        }
-        [data-state="default"][data-pressed] > div:nth-child(2) {
-          width: 0.3rem !important;
-          height: 0.3rem !important;
-        }
-      `}</style>
     </div>
   );
 }
