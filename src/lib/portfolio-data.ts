@@ -48,6 +48,10 @@ export interface Milestone {
   period: string;
   title: string;
   org: string;
+  /** short caps tag shown beneath the title (location / mode / category) */
+  tag?: string;
+  /** subtitle line shown beneath the title (e.g. org · metric) */
+  subtitle?: string;
   kind: "education" | "certification" | "activity" | "project";
   detail: string;
   metric?: string;
@@ -285,83 +289,66 @@ export const PROJECTS: Project[] = [
 
 export const MILESTONES: Milestone[] = [
   {
-    id: "bgs",
+    id: "shipments",
     era: "Now",
-    period: "Aug 2023 — Present",
-    title: "B.E. Artificial Intelligence & Data Science",
-    org: "BGS College of Engineering and Technology",
-    kind: "education",
+    period: "2025",
+    title: "Multiple Full-Stack Shipments",
+    org: "Independent",
+    tag: "INDEPENDENT",
+    kind: "project",
     detail:
-      "Building a foundation across machine learning, deep learning, and full-stack engineering. CGPA 8.5 and climbing.",
-    metric: "CGPA 8.5",
+      "Shipped 4+ end-to-end projects spanning React commerce, LLM automation, NLP triage, and embedded hardware.",
     accent: "ember",
-  },
-  {
-    id: "kiro",
-    era: "Arena",
-    period: "2024",
-    title: "Hackathon Participant — Kiro Online",
-    org: "Online Hackathon hosted by Kiro",
-    kind: "activity",
-    detail:
-      "Shipped under pressure against the clock. Learned to cut scope ruthlessly and keep the demo story tight.",
-    accent: "aurora",
   },
   {
     id: "adhvaya",
     era: "Arena",
     period: "2024",
-    title: "Hackathon Participant — Adhvaya",
+    title: "Adhvaya Hackathon · BGSCET",
     org: "BGSCET",
+    tag: "BANGALORE",
     kind: "activity",
     detail:
-      "Collaborated with a team to take an idea from prompt to prototype in a weekend. Practice in shipping in public.",
-    accent: "ember",
-  },
-  {
-    id: "jpmc",
-    era: "Credential",
-    period: "2024",
-    title: "Software Engineering Job Simulation",
-    org: "JPMorgan Chase",
-    kind: "certification",
-    detail:
-      "Worked through a realistic enterprise engineering workflow — interface fixes, data analysis, and stock-price interfacing.",
+      "Participated with the Smart Haptic Belt — a navigation vocabulary for blind-deaf users.",
     accent: "aurora",
   },
   {
-    id: "aws",
-    era: "Credential",
+    id: "kiro",
+    era: "Arena",
     period: "2024",
-    title: "Introduction to Generative AI",
-    org: "AWS",
-    kind: "certification",
-    detail:
-      "Grounded in the fundamentals of generative models, prompt engineering, and the AWS AI service landscape.",
+    title: "Online Hackathon · Kiro",
+    org: "Kiro",
+    tag: "REMOTE",
+    kind: "activity",
+    detail: "Built and pitched under a 48-hour build cycle.",
     accent: "ember",
   },
   {
-    id: "ccna",
-    era: "Credential",
-    period: "2024",
-    title: "CCNA — Networks, Routing, Security",
-    org: "Cisco",
-    kind: "certification",
+    id: "bgs",
+    era: "Now",
+    period: "2023 — PRESENT",
+    title: "B.E. Artificial Intelligence & Data Science",
+    org: "BGS College of Engineering and Technology",
+    subtitle: "BGS COLLEGE OF ENGINEERING AND TECHNOLOGY · CGPA 8.5",
+    tag: "EDUCATION",
+    kind: "education",
     detail:
-      "Introduction to Networks, Switching/Routing/Wireless Essentials, and Enterprise Networking & Security.",
-    accent: "aurora",
+      "Foundations in ML, DL, DSA, systems, and networks. CGPA 8.5 and climbing.",
+    metric: "CGPA 8.5",
+    accent: "ember",
   },
   {
     id: "pu",
     era: "Origin",
     period: "2021 — 2023",
-    title: "PCMB — Pre-University",
+    title: "Pre-University · PCMB",
     org: "Chaitanya PU College",
+    subtitle: "CHAITANYA PU COLLEGE · 89.7%",
+    tag: "EDUCATION",
     kind: "education",
-    detail:
-      "Physics, Chemistry, Mathematics, Biology. The quantitative backbone before engineering began.",
+    detail: "Physics, Chemistry, Mathematics, Biology. Bangalore, India.",
     metric: "89.7%",
-    accent: "ember",
+    accent: "aurora",
   },
 ];
 

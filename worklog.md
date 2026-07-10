@@ -160,3 +160,20 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Transmit section now clones the reference: huge serif headline + minimalist numbered form + clean send button, dark cinematic band in both themes
+
+---
+Task ID: 20
+Agent: orchestrator (main)
+Task: Replace entire Trajectory section — clone reference (vertical timeline with ember rail + dots + animation)
+
+Work Log:
+- Analyzed reference: vertical timeline, left date column + right content (title + caps tag + description), ember/yellow vertical rail with dots at each entry, dark bg, section heading "A short, deliberate trajectory." with "deliberate" italic ember, scroll-driven rail fill + staggered text reveal
+- Updated Milestone interface: added optional `tag` (caps location/mode) and `subtitle` (org · metric) fields
+- Rewrote MILESTONES data to reference order (most recent first): 2025 Multiple Full-Stack Shipments (INDEPENDENT), 2024 Adhvaya Hackathon · BGSCET (BANGALORE), 2024 Online Hackathon · Kiro (REMOTE), 2023-PRESENT B.E. AI & Data Science (EDUCATION, CGPA 8.5), 2021-2023 Pre-University · PCMB (EDUCATION, 89.7%)
+- Rewrote trajectory-section.tsx: scope-dark dark band, heading "A short, deliberate trajectory." with italic ember "deliberate", vertical timeline with left date column (auto/8rem) + right content, hairline rail + animated ember→aurora gradient fill (scrollYProgress scaleY), ember/aurora dots on rail at each entry, staggered reveal (opacity+y, 0.08s delay per entry)
+- Responsive: mobile uses narrower date column + tighter spacing; rail position adapts
+- Browser-verified: heading + italic "deliberate", multiple timeline entries (2025/2024/2024/2023-PRESENT/2021-2023) render with rail + dots, dark band in both themes, readable in light mode
+
+Stage Summary:
+- Lint: clean
+- Trajectory section now clones the reference: vertical ember-rail timeline with dots, staggered scroll reveal, dark cinematic band in both themes
