@@ -102,3 +102,24 @@ Stage Summary:
 - Premium serif typography (Fraunces) across all headings/name/nav/footer; Instrument Serif italic for emphasis words
 - No boring/default fonts remain; editorial magazine feel achieved
 - Readable in both dark and light themes
+
+---
+Task ID: 17
+Agent: orchestrator (main)
+Task: Rebuild the post-manifesto marquee as premium alternating outline/fill serif wheel per reference
+
+Work Log:
+- Analyzed reference: horizontal scrolling marquee, large serif text, alternating OUTLINE (stroked/hollow) and FILLED words, 4-point star separator between words, dark background, mixed case
+- Rewrote tech-marquee.tsx with MarqueeItem[] (Engineering/Intelligence/Interaction/Systems/Machine Learning/Interfaces/Full-Stack/Generative AI)
+- Alternating outline (transparent fill + WebkitTextStroke 1.5px light) vs fill (solid light) using Fraunces (font-display)
+- Custom SVG 4-point star path (M50 0 L61 39 L100 50...) filled with ember as separator, responsive sizes
+- Made band always dark (bg-obsidian) with hardcoded light text — deliberate cinematic divider that works in both themes
+- Edge fade gradients in obsidian on both sides
+- Added .signal-marquee-track class + prefers-reduced-motion media query to pause animation
+- Responsive type scale: text-4xl mobile → text-6xl md → text-7xl lg
+- Browser-verified: dark band with alternating outline/fill serif words + ember 4-point stars, scrolling; readable in both dark and light mode (band stays cinematic dark)
+
+Stage Summary:
+- Lint: clean
+- Marquee now matches reference aesthetic (premium editorial alternating outline/fill + star separators)
+- Works in both themes as intentional dark divider
