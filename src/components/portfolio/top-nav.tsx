@@ -62,13 +62,11 @@ export function TopNav({ onOpenCommand }: TopNavProps) {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: DURATION.normal, ease: EASE.signal, delay: 0.1 }}
-        className="fixed inset-x-0 top-0 z-[80] flex justify-center px-3 pt-3 md:px-6 md:pt-4"
+        className="glass-header fixed inset-x-0 top-0 z-[80]"
       >
         <nav
           aria-label="Primary"
-          className={`glass-nav flex w-full max-w-5xl items-center justify-between gap-3 rounded-full py-2 pl-4 pr-2 transition-all duration-500 ${
-            scrolled ? "md:py-1.5" : "md:py-2"
-          }`}
+          className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-6 py-3.5 md:px-10"
         >
           {/* Logo */}
           <button
@@ -124,7 +122,7 @@ export function TopNav({ onOpenCommand }: TopNavProps) {
               onClick={onOpenCommand}
               data-cursor
               data-cursor-label="⌘K"
-              className="hidden h-9 items-center gap-1.5 rounded-full border border-border px-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground sm:flex"
+              className="hidden h-9 items-center gap-1.5 rounded-full px-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground sm:flex"
               aria-label="Open command palette"
             >
               ⌘K
@@ -136,7 +134,7 @@ export function TopNav({ onOpenCommand }: TopNavProps) {
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
               data-cursor
-              className="grid h-9 w-9 place-items-center rounded-full border border-border text-foreground transition-colors hover:border-ember/50 hover:text-ember md:hidden"
+              className="grid h-9 w-9 place-items-center rounded-full text-foreground transition-colors hover:text-ember md:hidden"
             >
               {mobileOpen ? (
                 <X className="h-4 w-4" />

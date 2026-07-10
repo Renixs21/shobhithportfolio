@@ -50,11 +50,12 @@ function TimelineRow({ m, index }: { m: Milestone; index: number }) {
 
 export function TrajectorySection() {
   const ref = useRef<HTMLElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 65%", "end 75%"],
+    target: timelineRef,
+    offset: ["start 90%", "end 60%"],
   });
-  // The ember rail fills from top to bottom as the section scrolls past.
+  // The ember rail fills from top to bottom as the timeline scrolls past.
   const railScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
@@ -96,7 +97,7 @@ export function TrajectorySection() {
         </motion.div>
 
         {/* Timeline */}
-        <div className="relative">
+        <div ref={timelineRef} className="relative">
           {/* Static rail (hairline) — clean, no dots */}
           <div className="absolute bottom-0 left-0 top-2 hidden w-px bg-hairline md:block" />
           {/* Animated ember fill on top of the rail */}

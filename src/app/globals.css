@@ -315,6 +315,14 @@
       0 8px 32px -10px oklch(0.2 0.012 75 / 18%),
       inset 0 1px 0 0 oklch(1 0 0 / 60%);
   }
+  /* Full-width top header glass — frosted, no border, no shadow.
+     Matches the reference: a seamless frosted strip pinned to the top. */
+  .glass-header {
+    background: color-mix(in oklch, var(--background) 72%, transparent);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 1px solid color-mix(in oklch, var(--foreground) 6%, transparent);
+  }
 
   /* Gradient text — ember→aurora duotone */
   .text-signal-gradient {

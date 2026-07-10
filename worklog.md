@@ -240,3 +240,23 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Constellation graph restored to original clustered layout; only the title was replaced with "A constellation, not a checklist." (italic ember "not")
+
+---
+Task ID: 24
+Agent: orchestrator (main)
+Task: Fix trajectory rail start + full-width borderless glass header
+
+Work Log:
+- Header: rewrote top-nav from floating rounded pill (glass-nav with border+shadow) to FULL-WIDTH glass strip pinned to top
+  - Added .glass-header utility in globals.css: color-mix(background 72%) + blur(20px) saturate(150), no border, no shadow, only a 6%-foreground bottom hairline
+  - Removed rounded-full pill, max-w-5xl constraint, pt-3 padding; now max-w-7xl full-width with px-6/py-3.5
+  - Removed border from ⌘K button, mobile hamburger, and theme-toggle (hover now uses bg-foreground/5 instead of border)
+- Trajectory rail: changed useScroll target from the whole section ref to a new timelineRef on the timeline div, with offset ["start 90%", "end 60%"]
+  - Root cause: old offset ["start 65%", "end 75%"] measured the whole section (including heading), so by the time the timeline was visible, progress was already mid→high, making the fill appear to start from the middle
+  - Now progress 0 = timeline top just entering viewport (90%), progress 1 = timeline bottom passing 60% — fill starts at top and completes at bottom
+- Browser-verified: full-width borderless frosted glass header in both themes; trajectory rail fill starts at TOP when timeline enters and grows to FULL length when scrolled through
+
+Stage Summary:
+- Lint: clean
+- Header: full-width frosted glass, no borders, no shadow
+- Trajectory rail: animation starts from the top (fixed)

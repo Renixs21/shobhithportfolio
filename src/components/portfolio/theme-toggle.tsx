@@ -30,7 +30,7 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       data-cursor
       data-cursor-label={isDark ? "light" : "dark"}
-      className={`relative grid h-9 w-9 place-items-center overflow-hidden rounded-full border border-border text-foreground transition-colors hover:border-ember/50 hover:text-ember ${className}`}
+      className={`relative grid h-9 w-9 place-items-center overflow-hidden rounded-full text-foreground transition-colors hover:bg-foreground/5 hover:text-ember ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {mounted && isDark ? (
