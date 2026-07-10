@@ -2,13 +2,10 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { MILESTONES, type Milestone } from "@/lib/portfolio-data";
+import { MILESTONES, type Milestone, PROFILE } from "@/lib/portfolio-data";
 import { EASE, DURATION } from "@/lib/motion-tokens";
 
 function TimelineRow({ m, index }: { m: Milestone; index: number }) {
-  const accent =
-    m.accent === "ember" ? "var(--ember)" : "var(--aurora)";
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -19,24 +16,10 @@ function TimelineRow({ m, index }: { m: Milestone; index: number }) {
         ease: EASE.signal,
         delay: index * 0.08,
       }}
-      className="relative grid grid-cols-[auto_1fr] gap-x-6 py-7 md:grid-cols-[8rem_1fr] md:gap-x-10"
+      className="relative grid grid-cols-1 gap-1 py-6 md:grid-cols-[1fr_auto] md:gap-10"
     >
-      {/* Date column (left of rail) */}
-      <div className="pt-1 text-right md:text-left">
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          {m.period}
-        </span>
-      </div>
-
-      {/* Dot on the rail */}
-      <div
-        className="absolute left-[6.5rem] top-9 h-2.5 w-2.5 -translate-x-1/2 rounded-full ring-4 ring-obsidian md:left-[12.5rem]"
-        style={{ backgroundColor: accent }}
-        aria-hidden
-      />
-
-      {/* Content column (right of rail) */}
-      <div className="pl-6 md:pl-12">
+      {/* Content (left on desktop, full width on mobile) */}
+      <div className="md:pr-6">
         <h3 className="font-display text-fluid-lg font-medium leading-snug text-foreground md:text-2xl">
           {m.title}
         </h3>
@@ -53,6 +36,13 @@ function TimelineRow({ m, index }: { m: Milestone; index: number }) {
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
           {m.detail}
         </p>
+      </div>
+
+      {/* Year/date — RIGHT column on desktop */}
+      <div className="mt-2 md:mt-1 md:text-right">
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
+          {m.period}
+        </span>
       </div>
     </motion.div>
   );
@@ -74,7 +64,7 @@ export function TrajectorySection() {
       className="scope-dark relative overflow-hidden bg-obsidian py-28 md:py-36"
     >
       <div className="relative mx-auto w-full max-w-5xl px-6 md:px-10">
-        {/* Heading — "A short, deliberate trajectory." */}
+        {/* Heading — name + email beside it, then the title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,25 +75,34 @@ export function TrajectorySection() {
           <div className="font-mono text-xs tracking-widest text-ember">
             03 / TRAJECTORY
           </div>
-          <h2 className="mt-3 font-display text-fluid-2xl font-medium leading-[1] tracking-tightest text-foreground">
-            A short,{" "}
-            <span className="font-italic-accent text-ember">deliberate</span>{" "}
-            trajectory.
-          </h2>
-          <p className="mt-4 max-w-md text-muted-foreground">
-            Education, arenas, and shipments — in the order they happened,
-            most recent first.
-          </p>
+          <div className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <h2 className="font-display text-fluid-2xl font-medium leading-[1] tracking-tightest text-foreground">
+              A short,{" "}
+              <span className="font-italic-accent text-ember">
+                deliberate
+              </span>{" "}
+              trajectory.
+            </h2>
+          </div>
+          {/* Email beside the name */}
+          <a
+            href={`mailto:${PROFILE.email}`}
+            data-cursor
+            data-cursor-label="email"
+            className="mt-3 inline-block font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-ember"
+          >
+            {PROFILE.email}
+          </a>
         </motion.div>
 
         {/* Timeline */}
         <div className="relative">
-          {/* Static rail (hairline) */}
-          <div className="absolute bottom-0 left-[6.5rem] top-2 w-px bg-hairline md:left-[12.5rem]" />
+          {/* Static rail (hairline) — clean, no dots */}
+          <div className="absolute bottom-0 left-0 top-2 hidden w-px bg-hairline md:block" />
           {/* Animated ember fill on top of the rail */}
           <motion.div
             style={{ scaleY: railScale, transformOrigin: "top" }}
-            className="absolute left-[6.5rem] top-2 bottom-0 w-px md:left-[12.5rem]"
+            className="absolute left-0 top-2 bottom-0 hidden w-px md:block"
           >
             <div
               className="h-full w-full"
@@ -115,7 +114,9 @@ export function TrajectorySection() {
           </motion.div>
 
           {MILESTONES.map((m, i) => (
-            <TimelineRow key={m.id} m={m} index={i} />
+            <div key={m.id} className="relative md:pl-10">
+              <TimelineRow m={m} index={i} />
+            </div>
           ))}
         </div>
       </div>

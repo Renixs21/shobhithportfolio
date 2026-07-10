@@ -177,3 +177,21 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Trajectory section now clones the reference: vertical ember-rail timeline with dots, staggered scroll reveal, dark cinematic band in both themes
+
+---
+Task ID: 21
+Agent: orchestrator (main)
+Task: Trajectory tweaks — years on right, remove dots, 2025-PRESENT, email beside name
+
+Work Log:
+- Updated MILESTONES: changed "2023 — PRESENT" → "2025 – PRESENT" for the B.E. education entry
+- Rewrote trajectory-section.tsx layout: content on LEFT, year/date on RIGHT (grid-cols-[1fr_auto] on desktop, stacked on mobile)
+- Removed all dots from the rail — now a clean hairline + animated ember→aurora gradient fill only
+- Added email (PROFILE.email) beside the name in the heading area, styled as a mono uppercase link with hover→ember
+- Kept the simple scroll-driven rail fill animation (scrollYProgress → scaleY)
+- Kept scope-dark dark band for both themes
+- Browser-verified: heading + italic ember "deliberate", email visible beside name, years (2025, 2024, 2024, 2025-PRESENT, 2021-2023) on right, no dots on rail, clean line, 2025-PRESENT (not 2023)
+
+Stage Summary:
+- Lint: clean
+- Trajectory: years right, no dots, 2025-PRESENT, email beside name, scroll rail fill kept
