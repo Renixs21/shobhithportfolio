@@ -1,111 +1,168 @@
 "use client";
 
-import { Github, Linkedin, Mail, ArrowUp } from "lucide-react";
-import { Magnetic } from "./magnetic-button";
-import { PROFILE, NAV_LINKS } from "@/lib/portfolio-data";
+import { motion } from "framer-motion";
+import { ArrowDown } from "lucide-react";
+import { PROFILE } from "@/lib/portfolio-data";
+import { EASE, DURATION } from "@/lib/motion-tokens";
+
+const TECH_STACK = [
+  "FRAUNCES",
+  "INSTRUMENT SERIF",
+  "GEIST",
+  "REACT",
+  "NEXT.JS",
+  "FRAMER MOTION",
+  "TAILWIND",
+];
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
-  const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <footer className="relative mt-auto border-t border-border bg-surface/60">
-      <div className="mx-auto w-full max-w-7xl px-6 py-14 md:px-10">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
-          {/* Identity */}
-          <div className="md:col-span-5">
-            <div className="flex items-center gap-2">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-ember-soft font-mono text-xs font-bold text-ember">
-                SB
-              </span>
-              <span className="font-display text-lg font-medium text-foreground">
-                {PROFILE.name}
-              </span>
+    <footer className="scope-dark relative overflow-hidden bg-obsidian pt-24 md:pt-32">
+      {/* Tiny ember dot, top-left accent (like the reference) */}
+      <span
+        className="absolute left-6 top-6 h-1.5 w-1.5 rounded-full bg-ember md:left-10"
+        aria-hidden
+      />
+
+      <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
+        {/* Main grid — End. headline + ELSEWHERE + SAY HELLO */}
+        <div className="grid grid-cols-1 gap-16 pb-20 md:grid-cols-12 md:gap-10">
+          {/* Left — massive "End." with ember dot */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: DURATION.hero, ease: EASE.signal }}
+            className="md:col-span-6"
+          >
+            <h2 className="font-display text-[clamp(5rem,22vw,16rem)] font-medium leading-[0.85] tracking-tightest text-foreground">
+              End
+              <span className="inline-block h-[0.18em] w-[0.18em] translate-y-[0.04em] rounded-full bg-ember align-baseline" />
+            </h2>
+          </motion.div>
+
+          {/* Center — ELSEWHERE links */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{
+              duration: DURATION.slow,
+              ease: EASE.signal,
+              delay: 0.12,
+            }}
+            className="md:col-span-3 md:pt-4"
+          >
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+              ELSEWHERE
             </div>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              {PROFILE.signature}
-            </p>
-            <div className="mt-5 flex items-center gap-1">
-              {[
-                { icon: Github, href: PROFILE.github, label: "GitHub" },
-                { icon: Linkedin, href: PROFILE.linkedin, label: "LinkedIn" },
-                { icon: Mail, href: `mailto:${PROFILE.email}`, label: "Email" },
-              ].map(({ icon: Icon, href, label }) => (
-                <Magnetic
-                  key={label}
-                  as="a"
-                  href={href}
+            <ul className="mt-5 space-y-3">
+              <li>
+                <a
+                  href={PROFILE.github}
                   target="_blank"
                   rel="noreferrer"
-                  strength={0.5}
-                  cursorLabel={label}
-                  className="grid h-10 w-10 place-items-center rounded-full text-muted-foreground transition-colors hover:text-ember"
-                  aria-label={label}
+                  data-cursor
+                  data-cursor-label="github"
+                  className="group inline-flex items-baseline gap-1 text-fluid-base text-foreground transition-colors hover:text-ember"
                 >
-                  <Icon className="h-[18px] w-[18px]" />
-                </Magnetic>
-              ))}
-            </div>
-          </div>
-
-          {/* Sitemap */}
-          <div className="md:col-span-3">
-            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-              Sections
-            </div>
-            <ul className="mt-4 space-y-2">
-              {NAV_LINKS.map((l) => (
-                <li key={l.id}>
-                  <button
-                    onClick={() => scrollTo(l.id)}
-                    data-cursor
-                    data-cursor-label={l.hint}
-                    className="text-sm text-muted-foreground transition-colors hover:text-ember"
-                  >
-                    {l.label}
-                  </button>
-                </li>
-              ))}
+                  GitHub
+                  <span className="text-muted-foreground transition-colors group-hover:text-ember">
+                    /
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={PROFILE.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor
+                  data-cursor-label="linkedin"
+                  className="group inline-flex items-baseline gap-1 text-fluid-base text-foreground transition-colors hover:text-ember"
+                >
+                  LinkedIn
+                  <span className="text-muted-foreground transition-colors group-hover:text-ember">
+                    /
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/shobhith-bj-resume.pdf"
+                  download="shobhith-bj-resume.pdf"
+                  data-cursor
+                  data-cursor-label="download"
+                  className="group inline-flex items-center gap-1.5 text-fluid-base text-foreground transition-colors hover:text-ember"
+                >
+                  Resume (PDF)
+                  <ArrowDown className="h-4 w-4 text-ember transition-transform duration-300 group-hover:translate-y-0.5" />
+                </a>
+              </li>
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Status */}
-          <div className="md:col-span-4">
+          {/* Right — SAY HELLO contact */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{
+              duration: DURATION.slow,
+              ease: EASE.signal,
+              delay: 0.2,
+            }}
+            className="md:col-span-3 md:pt-4"
+          >
             <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-              Status
+              SAY HELLO
             </div>
-            <div className="mt-4 flex items-center gap-2 text-sm text-foreground">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-aurora" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora" />
-              </span>
-              {PROFILE.availability}
-            </div>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {PROFILE.location}
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {PROFILE.email}
-            </p>
-          </div>
+            <ul className="mt-5 space-y-3 text-fluid-base text-foreground">
+              <li>
+                <a
+                  href={`mailto:${PROFILE.email}`}
+                  data-cursor
+                  data-cursor-label="email"
+                  className="transition-colors hover:text-ember"
+                >
+                  {PROFILE.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${PROFILE.phone.replace(/\s/g, "")}`}
+                  data-cursor
+                  data-cursor-label="call"
+                  className="transition-colors hover:text-ember"
+                >
+                  {PROFILE.phone}
+                </a>
+              </li>
+              <li className="text-muted-foreground">{PROFILE.location}</li>
+            </ul>
+          </motion.div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-6 md:flex-row">
-          <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            © {year} {PROFILE.name} · designed & built from scratch
+        {/* Hairline divider */}
+        <div className="h-px w-full bg-hairline" />
+
+        {/* Bottom row — copyright + tech stack */}
+        <div className="flex flex-col items-start justify-between gap-3 py-8 md:flex-row md:items-center">
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            © {year} {PROFILE.name} — HANDCRAFTED IN BANGALORE.
           </div>
-          <Magnetic
-            as="button"
-            strength={0.5}
-            cursorLabel="top"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-2 rounded-full border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:border-ember/50 hover:text-ember"
-          >
-            <ArrowUp className="h-3 w-3" />
-            back to overture
-          </Magnetic>
+          <div className="flex flex-wrap gap-x-2 gap-y-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/70">
+            {TECH_STACK.map((t, i) => (
+              <span key={t} className="flex items-center gap-2">
+                {t}
+                {i < TECH_STACK.length - 1 && (
+                  <span className="text-muted-foreground/40">·</span>
+                )}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

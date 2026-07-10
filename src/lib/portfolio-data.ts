@@ -73,10 +73,10 @@ export const PROFILE = {
   email: "shobhith272@gmail.com",
   phone: "+91 8618655878",
   availability: "Open to internships & collaboration",
-  github: "https://github.com/",
-  githubHandle: "github",
-  linkedin: "https://linkedin.com/in/",
-  linkedinHandle: "linkedin",
+  github: "https://github.com/Renixs21",
+  githubHandle: "Renixs21",
+  linkedin: "https://www.linkedin.com/in/shobhith-bj-484905294/",
+  linkedinHandle: "shobhith-bj",
   summary:
     "Full-stack, multi-stack engineering student experienced in building responsive frontend interfaces and RESTful APIs, backed by a strong AI/ML foundation. Fast learner comfortable moving across Python backends, modern JS frontends, and CMS platforms — has independently shipped multiple full projects end to end.",
   philosophy:

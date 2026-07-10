@@ -260,3 +260,21 @@ Stage Summary:
 - Lint: clean
 - Header: full-width frosted glass, no borders, no shadow
 - Trajectory rail: animation starts from the top (fixed)
+
+---
+Task ID: 25
+Agent: orchestrator (main)
+Task: Replace entire footer — clone reference (End. + ELSEWHERE + SAY HELLO + resume download)
+
+Work Log:
+- Analyzed reference: massive "End." serif headline with ember dot replacing period, ELSEWHERE column (GitHub/, LinkedIn/, Resume (PDF) ↓), SAY HELLO column (email/phone/location), bottom row (copyright + tech stack) separated by hairline, dark bg
+- Copied resume to public/shobhith-bj-resume.pdf for download
+- Updated PROFILE: github=https://github.com/Renixs21, linkedin=https://www.linkedin.com/in/shobhith-bj-484905294/
+- Rewrote site-footer.tsx: scope-dark dark band, tiny ember dot top-left, grid (6/3/3) — left massive "End" + ember dot (clamp up to 16rem), center ELSEWHERE (GitHub /, LinkedIn /, Resume (PDF) ↓ with ArrowDown), right SAY HELLO (email/phone/Bangalore), hairline divider, bottom row copyright "© 2026 SHOBHITH BJ — HANDCRAFTED IN BANGALORE." + tech stack "FRAUNCES · INSTRUMENT SERIF · GEIST · REACT · NEXT.JS · FRAMER MOTION · TAILWIND"
+- Resume link uses href="/shobhith-bj-resume.pdf" download="shobhith-bj-resume.pdf" — auto-downloads on click
+- Verified: links point to correct URLs (github/Renixs21, linkedin shobhith-bj-484905294), resume PDF served 200 application/pdf 62KB, download attr present, footer dark band in both themes
+
+Stage Summary:
+- Lint: clean
+- Footer clones reference: End. + ember dot, ELSEWHERE (GitHub/LinkedIn/Resume download), SAY HELLO, copyright + tech stack
+- Real GitHub + LinkedIn URLs, resume auto-downloads on click
