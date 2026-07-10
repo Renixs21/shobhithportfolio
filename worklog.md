@@ -445,3 +445,23 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Contact form now actually delivers email: works immediately (console fallback), upgrade to Resend (recommended) or Web3Forms by adding one env var
+
+---
+Task ID: 35
+Agent: orchestrator (main)
+Task: Switch contact email backend to Nodemailer + Gmail SMTP
+
+Work Log:
+- Installed nodemailer + @types/nodemailer
+- Rewrote src/lib/email.ts to use Nodemailer + Gmail SMTP:
+  - service: "gmail", auth: GMAIL_USER + GMAIL_APP_PASSWORD
+  - Sends from your Gmail to OWNER_EMAIL (yourself), replyTo = visitor's name+email
+  - HTML email template (name/email/message) + plain text fallback
+  - Console log fallback if Gmail creds not set
+- Updated .env: removed Resend/Web3Forms vars; added GMAIL_USER + GMAIL_APP_PASSWORD (commented) with setup instructions (2-Step Verification → App Password)
+- /api/contact/route.ts unchanged (already calls sendContactEmail, provider type now "gmail" | "console")
+- Tested: curl POST returns ok:true provider:console (dev fallback); ready to switch to real Gmail the moment creds are added
+
+Stage Summary:
+- Lint: clean
+- Contact backend = Nodemailer + Gmail SMTP; add GMAIL_USER + GMAIL_APP_PASSWORD to .env + restart → real emails land in shobhithbj@gmail.com

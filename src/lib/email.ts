@@ -1,17 +1,25 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 /**
- * Email delivery layer.
+ * Email delivery layer — Nodemailer + Gmail SMTP.
  *
- * Strategy:
- *  1. If RESEND_API_KEY is set → send via Resend (best DX, 3,000/mo free).
- *  2. Else if WEB3FORMS_ACCESS_KEY is set → send via Web3Forms (free,
- *     no signup needed for the access key you paste in).
- *  3. Else → log to server console (dev fallback so nothing crashes).
+ * Sends mail through YOUR Gmail account using an App Password (Google
+ * requires App Passwords for SMTP; your normal password won't work).
  *
- * The email lands in your inbox (shobhithbj@gmail.com by default) with
- * the visitor's name, email, and message — plus a reply-to so you can
- * answer them directly.
+ * Setup (one time):
+ *   1. Turn on 2-Step Verification: https://myaccount.google.com/security
+ *   2. Create an App Password: https://myaccount.google.com/apppasswords
+ *      (pick "Mail" + your device name → copy the 16-char password)
+ *   3. Add to .env:
+ *        GMAIL_USER=shobhithbj@gmail.com
+ *        GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
+ *   4. Restart the dev server.
+ *
+ * The message lands in your inbox (you send to yourself), with
+ * reply-to set to the visitor so you can answer them directly.
+ *
+ * If the Gmail creds aren't set, falls back to logging the message to
+ * the server console so the form never crashes.
  */
 
 export interface ContactPayload {
@@ -22,7 +30,7 @@ export interface ContactPayload {
 
 export interface SendResult {
   ok: boolean;
-  provider: "resend" | "web3forms" | "console";
+  provider: "gmail" | "console";
   id?: string;
   error?: string;
 }
@@ -35,15 +43,24 @@ export async function sendContactEmail(
 ): Promise<SendResult> {
   const { name, email, message } = payload;
 
-  // --- 1. Resend (preferred) -------------------------------------------
-  if (process.env.RESEND_API_KEY) {
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+
+  // --- Gmail SMTP ------------------------------------------------------
+  if (gmailUser && gmailPass) {
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
-      const { data, error } = await resend.emails.send({
-        // "onboarding@resend.dev" is Resend's shared testing sender —
-        // replace with your verified domain once you add one.
-        from: process.env.RESEND_FROM || "Portfolio <onboarding@resend.dev>",
-        to: [OWNER_EMAIL],
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: gmailUser,
+          pass: gmailPass,
+        },
+      });
+
+      const info = await transporter.sendMail({
+        // From your own Gmail (so it lands in your inbox / sent mail)
+        from: `Portfolio Contact <${gmailUser}>`,
+        to: OWNER_EMAIL,
         replyTo: `${name} <${email}>`,
         subject: `New portfolio message from ${name}`,
         text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
@@ -57,53 +74,18 @@ export async function sendContactEmail(
           </div>
         `,
       });
-      if (error) {
-        return { ok: false, provider: "resend", error: error.message };
-      }
-      return { ok: true, provider: "resend", id: data?.id };
+
+      return { ok: true, provider: "gmail", id: info.messageId };
     } catch (err) {
       return {
         ok: false,
-        provider: "resend",
-        error: err instanceof Error ? err.message : "Resend request failed",
+        provider: "gmail",
+        error: err instanceof Error ? err.message : "Gmail SMTP request failed",
       };
     }
   }
 
-  // --- 2. Web3Forms (free fallback) ------------------------------------
-  if (process.env.WEB3FORMS_ACCESS_KEY) {
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: process.env.WEB3FORMS_ACCESS_KEY,
-          subject: `New portfolio message from ${name}`,
-          from_name: "Portfolio Contact",
-          replyto: email,
-          name,
-          email,
-          message,
-        }),
-      });
-      const data = await res.json();
-      if (!data.success) {
-        return { ok: false, provider: "web3forms", error: data.message };
-      }
-      return { ok: true, provider: "web3forms", id: String(data.message_id ?? "") };
-    } catch (err) {
-      return {
-        ok: false,
-        provider: "web3forms",
-        error: err instanceof Error ? err.message : "Web3Forms request failed",
-      };
-    }
-  }
-
-  // --- 3. Dev fallback — log to console --------------------------------
+  // --- Dev fallback — log to console ------------------------------------
   console.log("\n========== NEW CONTACT MESSAGE ==========");
   console.log(`Name:    ${name}`);
   console.log(`Email:   ${email}`);
