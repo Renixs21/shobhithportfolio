@@ -21,6 +21,8 @@ export interface Project {
   accent: "ember" | "aurora";
   status: "shipped" | "exploration" | "collaboration";
   year: string;
+  /** GitHub repo URL — opened by the "GitHub" button on the project card */
+  github: string;
 }
 
 export interface SkillNode {
@@ -178,35 +180,8 @@ export const SKILL_EDGES: SkillEdge[] = [
 
 export const PROJECTS: Project[] = [
   {
-    id: "myntra",
-    index: "01",
-    name: "Myntra-Inspired Fashion Commerce",
-    tagline: "A pixel-perfect storefront, engineered like a product.",
-    problem:
-      "Translating a high-fidelity e-commerce concept into a real, responsive interface — without a design system crutch — is where most clones break down. Carts, flows, and states need to feel inevitable.",
-    process:
-      "Started from wireframes, decomposed the experience into catalog → product → cart → checkout states, and built each as a self-contained, typed component tree. Iterated on motion and spacing until the surface felt like a shipped product, not a demo.",
-    architecture:
-      "React 18 + TypeScript component architecture with a typed cart state machine. Tailwind for a token-driven design system. Route-level code-splitting so each flow loads only what it renders.",
-    stack: ["React 18", "TypeScript", "Tailwind CSS", "Responsive UI"],
-    challenges:
-      "Keeping cart state consistent across routes while preserving the snappiness of a single-page feel — solved with a lightweight store and optimistic updates.",
-    impact:
-      "A portfolio-grade storefront that demonstrates end-to-end frontend craftsmanship: from wireframe to a responsive, animated, fully-typed checkout flow.",
-    lessons:
-      "Design systems aren't files — they're decisions. The earlier you encode spacing and motion as tokens, the faster the surface becomes coherent.",
-    metrics: [
-      { label: "Flows", value: "4" },
-      { label: "Components", value: "30+" },
-      { label: "Type coverage", value: "100%" },
-    ],
-    accent: "ember",
-    status: "shipped",
-    year: "2024",
-  },
-  {
     id: "intel",
-    index: "02",
+    index: "01",
     name: "Competitive Intelligence Automation",
     tagline: "An LLM workflow that turns the open web into a briefing.",
     problem:
@@ -230,10 +205,11 @@ export const PROJECTS: Project[] = [
     accent: "aurora",
     status: "shipped",
     year: "2024",
+    github: "https://github.com/Renixs21",
   },
   {
     id: "triage",
-    index: "03",
+    index: "02",
     name: "Triage — AI Medical Assistant",
     tagline: "Symptom analysis with the discipline of a clinician's first pass.",
     problem:
@@ -257,10 +233,11 @@ export const PROJECTS: Project[] = [
     accent: "ember",
     status: "shipped",
     year: "2024",
+    github: "https://github.com/Renixs21",
   },
   {
     id: "haptic",
-    index: "04",
+    index: "03",
     name: "Smart Haptic Navigation Belt",
     tagline: "Wearable sensing for blind-deaf independence.",
     problem:
@@ -284,6 +261,7 @@ export const PROJECTS: Project[] = [
     accent: "aurora",
     status: "collaboration",
     year: "2024",
+    github: "https://github.com/Renixs21",
   },
 ];
 

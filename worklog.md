@@ -388,3 +388,23 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Cursor now smoothly RESCALES (transform: scale, rAF-eased) from small→big only over clickable elements
+
+---
+Task ID: 32
+Agent: orchestrator (main)
+Task: Remove Myntra project, renumber, add GitHub button to projects
+
+Work Log:
+- Removed the "Myntra-Inspired Fashion Commerce" project from PROJECTS array
+- Renumbered remaining 3 projects: 01 Competitive Intelligence Automation, 02 Triage — AI Medical Assistant, 03 Smart Haptic Navigation Belt
+- Added `github` field to Project interface + each project (https://github.com/Renixs21)
+- Added Github icon import to builds-section.tsx
+- Added GitHub button (Magnetic link, border pill, Github icon + "GitHub", hover→ember) to all 3 modes:
+  - Immersive: footer next to year/case-study counter
+  - Spatial: active detail panel footer (right-aligned)
+  - Grid: expanded card after MetricRow (with onClick stopPropagation so it doesn't toggle the card)
+- Browser-verified: Myntra gone, first project is "01 Competitive Intelligence Automation", Triage shows as "02", Haptic as "03", GitHub button present with correct href
+
+Stage Summary:
+- Lint: clean
+- Myntra removed; 3 projects renumbered 01/02/03; GitHub button on all 3 project modes pointing to github.com/Renixs21

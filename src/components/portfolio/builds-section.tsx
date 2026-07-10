@@ -7,6 +7,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   Boxes,
+  Github,
   LayoutGrid,
   Layers,
   type LucideIcon,
@@ -231,10 +232,24 @@ function ImmersiveMode() {
             <div className="max-w-sm">
               <MetricRow project={project} />
             </div>
-            <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              <span>{project.year}</span>
-              <span className="text-ember">/</span>
-              <span>case study · {index + 1} of {PROJECTS.length}</span>
+            <div className="flex items-center gap-4">
+              <Magnetic
+                as="a"
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                strength={0.3}
+                cursorLabel="repo"
+                className="group inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-foreground transition-colors hover:border-ember/60 hover:text-ember"
+              >
+                <Github className="h-4 w-4" />
+                GitHub
+              </Magnetic>
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                <span>{project.year}</span>
+                <span className="text-ember">/</span>
+                <span>case study · {index + 1} of {PROJECTS.length}</span>
+              </div>
             </div>
           </div>
         </motion.article>
@@ -346,17 +361,33 @@ function SpatialMode() {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: DURATION.normal, ease: EASE.signal }}
-        className="mt-6 grid grid-cols-1 gap-4 rounded-2xl border border-border bg-surface/40 p-6 md:grid-cols-3"
+        className="mt-6 rounded-2xl border border-border bg-surface/40 p-6"
       >
-        <DetailBlock label="Problem" accent={project.accent}>
-          {project.problem}
-        </DetailBlock>
-        <DetailBlock label="Architecture" accent={project.accent}>
-          {project.architecture}
-        </DetailBlock>
-        <DetailBlock label="Impact" accent={project.accent}>
-          {project.impact}
-        </DetailBlock>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <DetailBlock label="Problem" accent={project.accent}>
+            {project.problem}
+          </DetailBlock>
+          <DetailBlock label="Architecture" accent={project.accent}>
+            {project.architecture}
+          </DetailBlock>
+          <DetailBlock label="Impact" accent={project.accent}>
+            {project.impact}
+          </DetailBlock>
+        </div>
+        <div className="mt-6 flex justify-end">
+          <Magnetic
+            as="a"
+            href={project.github}
+            target="_blank"
+            rel="noreferrer"
+            strength={0.3}
+            cursorLabel="repo"
+            className="group inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-foreground transition-colors hover:border-ember/60 hover:text-ember"
+          >
+            <Github className="h-4 w-4" />
+            GitHub
+          </Magnetic>
+        </div>
       </motion.div>
     </div>
   );
@@ -439,6 +470,20 @@ function GridMode() {
                   </DetailBlock>
                   <div className="pt-2">
                     <MetricRow project={p} />
+                  </div>
+                  <div className="pt-4">
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      data-cursor
+                      data-cursor-label="repo"
+                      className="group inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-medium text-foreground transition-colors hover:border-ember/60 hover:text-ember"
+                    >
+                      <Github className="h-4 w-4" />
+                      GitHub
+                    </a>
                   </div>
                 </div>
               </motion.div>
