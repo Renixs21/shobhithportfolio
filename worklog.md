@@ -278,3 +278,19 @@ Stage Summary:
 - Lint: clean
 - Footer clones reference: End. + ember dot, ELSEWHERE (GitHub/LinkedIn/Resume download), SAY HELLO, copyright + tech stack
 - Real GitHub + LinkedIn URLs, resume auto-downloads on click
+
+---
+Task ID: 26
+Agent: orchestrator (main)
+Task: Fix hydration mismatch error (ThemeToggle aria-label/cursor-label)
+
+Work Log:
+- Reproduced hydration error via browser console — diff pointed at ThemeToggle: server rendered aria-label="Switch to dark mode" / data-cursor-label="dark", client rendered "Switch to light mode" / "light"
+- Root cause: next-themes useTheme() returns undefined theme on server (no localStorage), so isDark=false → "Switch to dark mode"; client resolves theme="dark" from localStorage → isDark=true → "Switch to light mode" — attribute mismatch
+- Fix: render neutral stable values until mounted — aria-label="Toggle theme", data-cursor-label="theme", and an invisible Sun placeholder icon; after mount, switch to theme-aware labels + AnimatePresence icon swap
+- Also guarded toggle() to no-op until mounted
+- Browser-verified: reloaded page, hydration error GONE from console (only benign DevTools info + HMR + framer-motion scroll warning remain); theme toggle still works (switches dark↔light, label updates)
+
+Stage Summary:
+- Lint: clean
+- Hydration mismatch fixed: ThemeToggle now renders stable SSR placeholder until mounted, then resolves theme-aware labels/icon

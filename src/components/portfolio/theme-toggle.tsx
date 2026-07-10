@@ -19,46 +19,63 @@ export function ThemeToggle({ className = "" }: ThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const mounted = useIsClient();
 
+  // Until mounted, the theme is unknown — render a neutral placeholder
+  // so server and first client render match (avoids hydration mismatch).
   const current = theme === "system" ? resolvedTheme : theme;
   const isDark = current === "dark";
 
-  const toggle = () => setTheme(isDark ? "light" : "dark");
+  const toggle = () => {
+    if (!mounted) return;
+    setTheme(isDark ? "light" : "dark");
+  };
+
+  // Stable labels until mounted; switch to theme-aware after mount.
+  const ariaLabel = mounted
+    ? isDark
+      ? "Switch to light mode"
+      : "Switch to dark mode"
+    : "Toggle theme";
+  const cursorLabel = mounted ? (isDark ? "light" : "dark") : "theme";
 
   return (
     <button
       onClick={toggle}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={ariaLabel}
       data-cursor
-      data-cursor-label={isDark ? "light" : "dark"}
+      data-cursor-label={cursorLabel}
       className={`relative grid h-9 w-9 place-items-center overflow-hidden rounded-full text-foreground transition-colors hover:bg-foreground/5 hover:text-ember ${className}`}
     >
-      <AnimatePresence mode="wait" initial={false}>
-        {mounted && isDark ? (
-          <motion.span
-            key="moon"
-            initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-            animate={{ rotate: 0, opacity: 1, scale: 1 }}
-            exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-            transition={{ duration: DURATION.fast, ease: EASE.signal }}
-            className="absolute"
-          >
-            <Moon className="h-[18px] w-[18px]" />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="sun"
-            initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
-            animate={{ rotate: 0, opacity: 1, scale: 1 }}
-            exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
-            transition={{ duration: DURATION.fast, ease: EASE.signal }}
-            className="absolute"
-          >
-            <Sun className="h-[18px] w-[18px]" />
-          </motion.span>
-        )}
-      </AnimatePresence>
-      {/* Placeholder until mounted to avoid layout shift */}
-      {!mounted && <Sun className="h-[18px] w-[18px] opacity-0" />}
+      {!mounted ? (
+        // Neutral placeholder (invisible) until the theme resolves —
+        // identical on server and client to prevent hydration mismatch.
+        <Sun className="h-[18px] w-[18px] opacity-0" aria-hidden />
+      ) : (
+        <AnimatePresence mode="wait" initial={false}>
+          {isDark ? (
+            <motion.span
+              key="moon"
+              initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+              transition={{ duration: DURATION.fast, ease: EASE.signal }}
+              className="absolute"
+            >
+              <Moon className="h-[18px] w-[18px]" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="sun"
+              initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+              transition={{ duration: DURATION.fast, ease: EASE.signal }}
+              className="absolute"
+            >
+              <Sun className="h-[18px] w-[18px]" />
+            </motion.span>
+          )}
+        </AnimatePresence>
+      )}
     </button>
   );
 }
