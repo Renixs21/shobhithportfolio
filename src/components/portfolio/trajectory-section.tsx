@@ -65,7 +65,32 @@ export function TrajectorySection() {
       className="scope-dark relative overflow-hidden bg-obsidian py-28 md:py-36"
     >
       <div className="relative mx-auto w-full max-w-5xl px-6 md:px-10">
-        {/* Heading — name + email beside it, then the title */}
+        {/* Top row — name (left) + email (right) on one straight line */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: DURATION.normal, ease: EASE.signal }}
+          className="mb-12 flex items-baseline justify-between gap-4 border-b border-hairline pb-5"
+        >
+          <div className="flex items-center gap-2 font-display text-fluid-lg font-medium text-foreground">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-ember" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-ember" />
+            </span>
+            {PROFILE.name}
+          </div>
+          <a
+            href={`mailto:${PROFILE.email}`}
+            data-cursor
+            data-cursor-label="email"
+            className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-ember"
+          >
+            {PROFILE.email}
+          </a>
+        </motion.div>
+
+        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -76,24 +101,11 @@ export function TrajectorySection() {
           <div className="font-mono text-xs tracking-widest text-ember">
             03 / TRAJECTORY
           </div>
-          <div className="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-            <h2 className="font-display text-fluid-2xl font-medium leading-[1] tracking-tightest text-foreground">
-              A short,{" "}
-              <span className="font-italic-accent text-ember">
-                deliberate
-              </span>{" "}
-              trajectory.
-            </h2>
-          </div>
-          {/* Email beside the name */}
-          <a
-            href={`mailto:${PROFILE.email}`}
-            data-cursor
-            data-cursor-label="email"
-            className="mt-3 inline-block font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-ember"
-          >
-            {PROFILE.email}
-          </a>
+          <h2 className="mt-3 font-display text-fluid-2xl font-medium leading-[1] tracking-tightest text-foreground">
+            A short,{" "}
+            <span className="font-italic-accent text-ember">deliberate</span>{" "}
+            trajectory.
+          </h2>
         </motion.div>
 
         {/* Timeline */}

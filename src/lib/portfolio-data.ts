@@ -304,7 +304,7 @@ export const MILESTONES: Milestone[] = [
   {
     id: "bgs",
     era: "Now",
-    period: "2025 – PRESENT",
+    period: "2023 – PRESENT",
     title: "B.E. Artificial Intelligence & Data Science",
     org: "BGS College of Engineering and Technology",
     subtitle: "BGS COLLEGE OF ENGINEERING AND TECHNOLOGY · CGPA 8.5",

@@ -408,3 +408,19 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Myntra removed; 3 projects renumbered 01/02/03; GitHub button on all 3 project modes pointing to github.com/Renixs21
+
+---
+Task ID: 33
+Agent: orchestrator (main)
+Task: Name+email on single straight line (Transmit + Trajectory); fix education date to 2023–PRESENT
+
+Work Log:
+- Fixed MILESTONES: B.E. AI & Data Science period "2025 – PRESENT" → "2023 – PRESENT"
+- Reworked Trajectory header: added a top row with name (left, font-display, ember pulse dot) + email (right, mono) on ONE straight horizontal line (flex items-baseline justify-between, border-b hairline), then the "03 / TRAJECTORY" eyebrow + "A short, deliberate trajectory." heading below
+- Reworked Transmit top row: changed from flex-col/md:flex-row/md:items-center (stacked on mobile) to flex items-baseline justify-between (always one straight baseline-aligned row), border-b hairline
+- Both sections now match the reference: name left + email right on a single straight line with a hairline below
+- Browser-verified: Transmit name+email on one row + headline below; Trajectory name+email on one row + heading below + date "2023 – PRESENT" (not 2025)
+
+Stage Summary:
+- Lint: clean
+- Transmit + Trajectory: name+email on single straight horizontal line; B.E. education date corrected to 2023 – PRESENT

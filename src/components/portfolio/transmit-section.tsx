@@ -102,13 +102,13 @@ export function TransmitSection() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ember-soft to-transparent opacity-40" />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 md:px-10">
-        {/* Top meta row — name (left) + email (right) beside it */}
+        {/* Top row — name (left) + email (right) on one straight line */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: DURATION.normal, ease: EASE.signal }}
-          className="mb-16 flex flex-col items-start justify-between gap-3 border-b border-hairline pb-6 md:flex-row md:items-center"
+          className="mb-16 flex items-baseline justify-between gap-4 border-b border-hairline pb-5"
         >
           <div className="flex items-center gap-2 font-display text-fluid-lg font-medium text-foreground">
             <span className="relative flex h-2 w-2">
