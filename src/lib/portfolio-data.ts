@@ -70,7 +70,7 @@ export const PROFILE = {
   lastName: "BJ",
   role: "Full-Stack Engineer · AI/ML Builder",
   location: "Bangalore, India",
-  email: "shobhith272@gmail.com",
+  email: "shobhithbj@gmail.com",
   phone: "+91 8618655878",
   availability: "Open to internships & collaboration",
   github: "https://github.com/Renixs21",

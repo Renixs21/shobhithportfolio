@@ -330,3 +330,18 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Only one TechMarquee remains (after Manifesto); the duplicate after Trajectory is gone
+
+---
+Task ID: 29
+Agent: orchestrator (main)
+Task: Transmit — name left + email right beside headline; update email to shobhithbj@gmail.com
+
+Work Log:
+- Updated PROFILE.email from shobhith272@gmail.com → shobhithbj@gmail.com (centralized, propagates everywhere: hero, transmit, footer, contact channels)
+- Reworked Transmit top meta row: replaced availability status with NAME on the left (font-display, ember pulse dot + "Shobhith BJ") and EMAIL on the right (mono uppercase, hover→ember), separated by a hairline border-bottom
+- Kept the massive "Let's build something absurdly good." headline below with italic ember "absurdly"
+- Browser-verified: name Shobhith BJ on left with ember dot, email shobhithbj@gmail.com on right, headline below; old email fully gone from DOM, new email present everywhere
+
+Stage Summary:
+- Lint: clean
+- Transmit: name left + email right beside the headline; all emails updated to shobhithbj@gmail.com

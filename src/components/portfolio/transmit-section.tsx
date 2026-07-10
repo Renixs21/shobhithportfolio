@@ -102,7 +102,7 @@ export function TransmitSection() {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ember-soft to-transparent opacity-40" />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 md:px-10">
-        {/* Top meta row — availability + email */}
+        {/* Top meta row — name (left) + email (right) beside it */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -110,12 +110,12 @@ export function TransmitSection() {
           transition={{ duration: DURATION.normal, ease: EASE.signal }}
           className="mb-16 flex flex-col items-start justify-between gap-3 border-b border-hairline pb-6 md:flex-row md:items-center"
         >
-          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+          <div className="flex items-center gap-2 font-display text-fluid-lg font-medium text-foreground">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-aurora" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora" />
+              <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-ember" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-ember" />
             </span>
-            {PROFILE.availability}
+            {PROFILE.name}
           </div>
           <a
             href={`mailto:${PROFILE.email}`}
