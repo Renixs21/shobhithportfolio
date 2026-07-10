@@ -294,3 +294,25 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Hydration mismatch fixed: ThemeToggle now renders stable SSR placeholder until mounted, then resolves theme-aware labels/icon
+
+---
+Task ID: 27
+Agent: orchestrator (main)
+Task: Replace entire manifesto — clone reference (CORE BELIEFS + 4 chapters with giant ember numbers)
+
+Work Log:
+- Analyzed 3 reference screenshots: "CORE BELIEFS" intro + 4 chapters, each with CHAPTER · 0X label, serif heading, body text, and a giant ember number alternating left/right; dark bg
+- Rewrote manifesto-section.tsx completely:
+  - scope-dark dark band, subtle ember glow drifting with scroll
+  - Intro: "Core beliefs" eyebrow (ember dot) + "Four principles I bring to every system I build." (Fraunces, "every" in italic ember) + subheading paragraph (full-stack/multi-stack summary)
+  - 4 chapters via CHAPTERS array, each rendered as a 2-col grid with giant ember number (Instrument Serif italic, clamp up to 16rem) alternating left/right + text block (Chapter · 0X label, serif heading, body)
+    - 01 Systems that think. (number left)
+    - 02 Motion is meaning. (number right)
+    - 03 Ship, then refine. (number left)
+    - 04 The craft is the moat. (number right)
+  - Each chapter separated by hairline border-top, staggered scroll reveal
+- Browser-verified: CORE BELIEFS intro with italic ember "every", all 4 chapters render (confirmed via DOM + visual), giant ember numbers alternating sides, dark band in both themes
+
+Stage Summary:
+- Lint: clean
+- Manifesto now clones reference: CORE BELIEFS intro + 4 chapters with giant ember numbers alternating left/right

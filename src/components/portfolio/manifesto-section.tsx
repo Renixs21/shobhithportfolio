@@ -6,128 +6,134 @@ import { RevealText } from "./reveal-text";
 import { PROFILE } from "@/lib/portfolio-data";
 import { EASE, DURATION } from "@/lib/motion-tokens";
 
+interface Chapter {
+  num: string;
+  title: string;
+  body: string;
+  /** which side the giant number sits on */
+  numSide: "left" | "right";
+}
+
+const CHAPTERS: Chapter[] = [
+  {
+    num: "01",
+    title: "Systems that think.",
+    body: "I don't just build interfaces — I build layered systems where the model, the API, and the pixel all belong to the same idea. AI is not a feature. It is the material.",
+    numSide: "left",
+  },
+  {
+    num: "02",
+    title: "Motion is meaning.",
+    body: "Every transition is a sentence. Every easing curve carries intent. Interfaces should feel like they're breathing — not busy, not still, but alive with rhythm.",
+    numSide: "right",
+  },
+  {
+    num: "03",
+    title: "Ship, then refine.",
+    body: "I ship end-to-end — from React 18 + TypeScript on the front to Django, DRF, Flask, and LLM pipelines on the back. Ownership over polish. Then polish over polish.",
+    numSide: "left",
+  },
+  {
+    num: "04",
+    title: "The craft is the moat.",
+    body: "Anyone can wire an API. Fewer can make it feel inevitable. Craft — in typography, timing, tension — is the last differentiator worth pursuing.",
+    numSide: "right",
+  },
+];
+
+function ChapterBlock({ chapter, index }: { chapter: Chapter; index: number }) {
+  const numLeft = chapter.numSide === "left";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-12% 0px" }}
+      transition={{ duration: DURATION.slow, ease: EASE.signal, delay: index * 0.05 }}
+      className="relative grid grid-cols-1 items-center gap-8 border-t border-hairline py-16 md:grid-cols-2 md:gap-12 md:py-24"
+    >
+      {/* Giant ember number — alternating sides */}
+      <div
+        className={`relative ${numLeft ? "md:order-1" : "md:order-2"} flex items-center`}
+      >
+        <span
+          className="font-italic-accent select-none leading-[0.8] text-ember"
+          style={{ fontSize: "clamp(7rem, 18vw, 16rem)" }}
+          aria-hidden
+        >
+          {chapter.num}
+        </span>
+      </div>
+
+      {/* Text */}
+      <div className={`${numLeft ? "md:order-2" : "md:order-1"}`}>
+        <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-ember" />
+          Chapter · {chapter.num}
+        </div>
+        <h3 className="mt-4 font-display text-fluid-xl font-medium leading-[1.05] tracking-tightest text-foreground">
+          {chapter.title}
+        </h3>
+        <p className="mt-5 max-w-md text-fluid-base leading-relaxed text-muted-foreground">
+          {chapter.body}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 export function ManifestoSection() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
+  const yGlow = useTransform(scrollYProgress, [0, 1], [80, -80]);
 
-  const yBg = useTransform(scrollYProgress, [0, 1], [60, -60]);
-  const yQuote = useTransform(scrollYProgress, [0, 1], [80, -40]);
-  const rotateGlow = useTransform(scrollYProgress, [0, 1], [0, 120]);
-
-  const paragraphs = PROFILE.summary.split(". ").filter(Boolean);
+  // The resume summary split into the reference's subheading.
+  const subheading =
+    "Full-stack, multi-stack engineering student with a strong AI/ML foundation. I move fluidly between Python backends, modern JS frontends, and CMS platforms — shipping end-to-end products, from wireframe to deploy.";
 
   return (
     <section
       ref={ref}
       id="manifesto"
-      className="relative overflow-hidden py-28 md:py-40"
+      className="scope-dark relative overflow-hidden bg-obsidian py-28 md:py-40"
     >
-      {/* Parallax glow */}
+      {/* Subtle ember glow that drifts with scroll */}
       <motion.div
-        style={{ y: yBg, rotate: rotateGlow }}
-        className="pointer-events-none absolute -left-40 top-20 h-[40rem] w-[40rem] rounded-full opacity-40 blur-[120px]"
+        style={{ y: yGlow }}
+        className="pointer-events-none absolute -left-40 top-1/4 h-[36rem] w-[36rem] rounded-full bg-ember-soft opacity-40 blur-[140px]"
         aria-hidden
-      >
-        <div className="h-full w-full rounded-full bg-ember-soft" />
-      </motion.div>
-      <motion.div
-        style={{ y: yBg }}
-        className="pointer-events-none absolute -right-40 bottom-0 h-[34rem] w-[34rem] rounded-full opacity-40 blur-[120px]"
-        aria-hidden
-      >
-        <div className="h-full w-full rounded-full bg-aurora-soft" />
-      </motion.div>
+      />
 
-      <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 gap-16 px-6 md:grid-cols-12 md:px-10">
-        {/* Left rail — index + label */}
-        <div className="md:col-span-3">
-          <motion.div
-            initial={{ opacity: 0, x: -16 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-15% 0px" }}
-            transition={{ duration: DURATION.normal, ease: EASE.signal }}
-            className="sticky top-32"
-          >
-            <div className="font-mono text-xs tracking-widest text-ember">
-              01 / MANIFESTO
-            </div>
-            <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-              who & why
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right — editorial content */}
-        <div className="md:col-span-9">
-          <motion.blockquote
-            style={{ y: yQuote }}
-            className="font-display text-fluid-2xl font-medium leading-[1.05] tracking-tightest text-foreground"
-          >
-            <RevealText as="span" className="block">
-              Signal over noise.
-            </RevealText>
-            <RevealText
-              as="span"
-              delay={0.12}
-              className="block font-italic-accent text-muted-foreground"
-            >
-              Always ship. Learn in public.
-            </RevealText>
-          </motion.blockquote>
-
-          <div className="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15% 0px" }}
-              transition={{ duration: DURATION.slow, ease: EASE.signal }}
-            >
-              <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-aurora">
-                the short version
-              </div>
-              <p className="text-fluid-base leading-relaxed text-foreground/85">
-                {paragraphs[0]}.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15% 0px" }}
-              transition={{
-                duration: DURATION.slow,
-                ease: EASE.signal,
-                delay: 0.12,
-              }}
-            >
-              <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-ember">
-                the longer version
-              </div>
-              <p className="text-fluid-base leading-relaxed text-muted-foreground">
-                {paragraphs.slice(1).join(". ")}.
-              </p>
-            </motion.div>
+      <div className="relative mx-auto w-full max-w-6xl px-6 md:px-10">
+        {/* Intro — CORE BELIEFS + headline + subheading */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-12% 0px" }}
+          transition={{ duration: DURATION.slow, ease: EASE.signal }}
+          className="max-w-3xl"
+        >
+          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+            <span className="h-1.5 w-1.5 rounded-full bg-ember" />
+            Core beliefs
           </div>
+          <h2 className="mt-5 font-display text-fluid-2xl font-medium leading-[1.02] tracking-tightest text-foreground">
+            Four principles I bring to{" "}
+            <span className="font-italic-accent text-ember">every</span>{" "}
+            system I build.
+          </h2>
+          <p className="mt-6 max-w-xl text-fluid-base leading-relaxed text-muted-foreground">
+            {subheading}
+          </p>
+        </motion.div>
 
-          {/* Philosophy pull-quote */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-15% 0px" }}
-            transition={{ duration: DURATION.slow, ease: EASE.signal }}
-            className="mt-16 border-l-2 border-ember/60 pl-6"
-          >
-            <p className="font-italic-accent text-fluid-lg text-foreground/90">
-              “{PROFILE.philosophy}”
-            </p>
-            <div className="mt-4 flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-              <span className="h-px w-8 bg-ember/60" />
-              operating principle
-            </div>
-          </motion.div>
+        {/* Chapters */}
+        <div className="mt-8">
+          {CHAPTERS.map((c, i) => (
+            <ChapterBlock key={c.num} chapter={c} index={i} />
+          ))}
         </div>
       </div>
     </section>
