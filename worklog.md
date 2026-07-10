@@ -195,3 +195,28 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Trajectory: years right, no dots, 2025-PRESENT, email beside name, scroll rail fill kept
+
+---
+Task ID: 22
+Agent: orchestrator (main)
+Task: Redesign constellation to match reference — centered heading, organic scattered ring, web connections, top-left labels
+
+Work Log:
+- Analyzed reference: centered heading "A constellation, not a checklist." with "not" italic ember, logos scattered in organic ring AROUND the heading (not clustered in group rings), thin web connections between nearby nodes, top-left "TOOLKIT" + "// hover to focus a cluster" labels, solid dark bg, hover brightens node + thickens its connections
+- Rewrote constellation-section.tsx completely:
+  - scope-dark dark band
+  - Top-left labels: TOOLKIT + "// hover to focus a cluster · click to open"
+  - Canvas with centered heading overlay "A constellation, not a checklist." (italic ember "not") via pointer-events-none absolute flex center
+  - Nodes scattered in organic ring using golden-angle distribution + jitter + radius multiplier (no group clustering)
+  - Distance-based neighbor web: each node connects to its 3 nearest neighbors, lines drawn behind heading
+  - Clean logo badges (white disc + accent ring + clipped logo), no glow
+  - Hover: node enlarges + label pill appears, connected lines brighten/thicken while non-cluster dims, neighbors stay bright
+  - Click → opens official page in new tab; keyboard Enter/Space on focused canvas opens active node
+  - Top-right hover readout (dot + label), bottom-right "N tools" count
+  - Theme-aware colors via readColorVar + MutationObserver
+- Fixed lint: {"// ..."} to escape // as JSX text
+- Browser-verified: centered heading with italic ember "not", logos scattered organically around it, web connections, top-left labels, hover cluster-focus works, dark band in both themes
+
+Stage Summary:
+- Lint: clean
+- Constellation now matches reference: centered heading + organic scattered ring + web connections + top-left labels, hover focuses cluster, click opens official page
