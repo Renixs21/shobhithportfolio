@@ -142,3 +142,21 @@ Stage Summary:
 - Lint: clean
 - BJ + "something magical." now visible (solid ember italic instead of fragile gradient-on-italic)
 - Constellation logos de-glowed (clean white badge + ring only)
+
+---
+Task ID: 19
+Agent: orchestrator (main)
+Task: Replace entire Transmit section — clone reference (massive headline + minimalist numbered form)
+
+Work Log:
+- Analyzed 2 reference screenshots: massive serif "Let's build something absurdly good." with "absurdly" italic ember, minimalist numbered form (01/02/03) with underline-only fields, dark bg, clean send button
+- Rewrote transmit-section.tsx completely: top meta row (availability + email), MASSIVE headline (text-fluid-mega, "Let's build" / "something absurdly good." with italic ember "absurdly"), numbered form (01 Your name / 02 Your email / 03 What are we making?) with underline-only inputs + ember focus underline, "Send it" button with arrow + hover underline, side aside with italic invitation + direct channels (Email/Phone/Based)
+- Added text-fluid-mega token to globals.css (clamp up to 11rem, spans viewport like reference)
+- Added .scope-dark utility — forces dark-mode foreground/muted/hairline tokens inside the section so it stays a dark band with readable light text in BOTH themes (matches the dark reference)
+- Section uses bg-obsidian + scope-dark so it's always a cinematic dark band regardless of theme
+- Replaced success celebration overlay with a cleaner inline aurora panel ("Transmission received.")
+- Browser-verified: massive headline with italic ember "absurdly" renders, numbered underline form visible, "Send it" button works, form submission shows success panel, section stays dark band in light mode
+
+Stage Summary:
+- Lint: clean
+- Transmit section now clones the reference: huge serif headline + minimalist numbered form + clean send button, dark cinematic band in both themes

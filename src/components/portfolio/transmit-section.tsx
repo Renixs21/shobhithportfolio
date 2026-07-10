@@ -2,20 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import {
-  ArrowUpRight,
-  Check,
-  Github,
-  Linkedin,
-  Loader2,
-  Mail,
-  MapPin,
-  Phone,
-  Send,
-  Sparkles,
-} from "lucide-react";
-import { Magnetic } from "./magnetic-button";
-import { RevealText } from "./reveal-text";
+import { Check, Loader2, Send } from "lucide-react";
 import { PROFILE } from "@/lib/portfolio-data";
 import { EASE, DURATION, SPRING } from "@/lib/motion-tokens";
 
@@ -27,36 +14,35 @@ interface FormState {
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-const CONTACT_CHANNELS = [
-  { icon: Mail, label: "Email", value: PROFILE.email, href: `mailto:${PROFILE.email}` },
-  { icon: Phone, label: "Phone", value: PROFILE.phone, href: `tel:${PROFILE.phone.replace(/\s/g, "")}` },
-  { icon: MapPin, label: "Location", value: PROFILE.location, href: undefined },
-  { icon: Github, label: "GitHub", value: PROFILE.githubHandle, href: PROFILE.github },
-  { icon: Linkedin, label: "LinkedIn", value: PROFILE.linkedinHandle, href: PROFILE.linkedin },
-];
-
-function FieldShell({
+function NumberedField({
+  index,
   label,
-  children,
   error,
+  children,
 }: {
+  index: string;
   label: string;
-  children: React.ReactNode;
   error?: string;
+  children: React.ReactNode;
 }) {
   return (
     <label className="group block">
-      <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+      <span className="mb-3 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+        <span className="text-ember">{index}</span>
+        <span className="text-muted-foreground/50">•</span>
         {label}
       </span>
-      {children}
+      <div className="relative">
+        {children}
+        <span className="pointer-events-none absolute inset-x-0 -bottom-px h-px scale-x-0 bg-ember transition-transform duration-500 group-focus-within:scale-x-100" />
+      </div>
       <AnimatePresence>
         {error && (
           <motion.span
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="mt-1.5 block font-mono text-[11px] text-destructive"
+            className="mt-2 block font-mono text-[11px] text-destructive"
           >
             {error}
           </motion.span>
@@ -108,215 +94,233 @@ export function TransmitSection() {
   };
 
   return (
-    <section id="transmit" className="relative overflow-hidden py-28 md:py-36">
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-ember-soft opacity-50 blur-[140px]" />
+    <section
+      id="transmit"
+      className="scope-dark relative overflow-hidden bg-obsidian py-28 md:py-40"
+    >
+      {/* Subtle ember glow at the base */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-ember-soft to-transparent opacity-40" />
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 md:px-10">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Left — invitation */}
-          <div>
-            <div className="font-mono text-xs tracking-widest text-ember">
-              05 / TRANSMIT
-            </div>
-            <h2 className="mt-3 text-fluid-2xl font-medium tracking-tightest text-foreground">
-              <RevealText as="span" className="block" innerClassName="font-display">
-                Let&apos;s build
-              </RevealText>
-              <RevealText
-                as="span"
-                delay={0.12}
-                className="block"
-                innerClassName="font-italic-accent text-ember"
+      <div className="relative mx-auto w-full max-w-6xl px-6 md:px-10">
+        {/* Top meta row — availability + email */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: DURATION.normal, ease: EASE.signal }}
+          className="mb-16 flex flex-col items-start justify-between gap-3 border-b border-hairline pb-6 md:flex-row md:items-center"
+        >
+          <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-aurora" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora" />
+            </span>
+            {PROFILE.availability}
+          </div>
+          <a
+            href={`mailto:${PROFILE.email}`}
+            data-cursor
+            data-cursor-label="email"
+            className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-ember"
+          >
+            {PROFILE.email}
+          </a>
+        </motion.div>
+
+        {/* MASSIVE headline — "Let's build something absurdly good." */}
+        <h2 className="font-display font-medium leading-[0.92] tracking-tightest text-foreground">
+          <motion.span
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-8% 0px" }}
+            transition={{ duration: DURATION.hero, ease: EASE.signal }}
+            className="block text-fluid-mega"
+          >
+            Let&apos;s build
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-8% 0px" }}
+            transition={{
+              duration: DURATION.hero,
+              ease: EASE.signal,
+              delay: 0.12,
+            }}
+            className="block text-fluid-mega"
+          >
+            something{" "}
+            <span className="font-italic-accent text-ember">absurdly</span>{" "}
+            good.
+          </motion.span>
+        </h2>
+
+        {/* Form + side note */}
+        <div className="mt-20 grid grid-cols-1 gap-16 lg:grid-cols-12">
+          {/* The minimalist numbered form */}
+          <form
+            onSubmit={handleSubmit}
+            className="lg:col-span-7"
+            aria-label="Contact form"
+          >
+            <div className="space-y-10">
+              <NumberedField index="01" label="Your name" error={errors.name}>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Ada Lovelace"
+                  className="w-full border-0 border-b border-hairline bg-transparent pb-3 text-fluid-base text-foreground placeholder:text-muted-foreground/50 transition-colors focus:border-transparent focus:outline-none"
+                  disabled={status === "sending" || status === "sent"}
+                  required
+                />
+              </NumberedField>
+
+              <NumberedField
+                index="02"
+                label="Your email"
+                error={errors.email}
               >
-                something magical.
-              </RevealText>
-            </h2>
-            <p className="mt-5 max-w-md text-muted-foreground">
-              Internships, collaborations, or a problem worth solving at
-              2am — my inbox is open. I read everything; I reply to what
-              matters.
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) =>
+                    setForm({ ...form, email: e.target.value })
+                  }
+                  placeholder="ada@analytical.engine"
+                  className="w-full border-0 border-b border-hairline bg-transparent pb-3 text-fluid-base text-foreground placeholder:text-muted-foreground/50 transition-colors focus:border-transparent focus:outline-none"
+                  disabled={status === "sending" || status === "sent"}
+                  required
+                />
+              </NumberedField>
+
+              <NumberedField
+                index="03"
+                label="What are we making?"
+                error={errors.message}
+              >
+                <textarea
+                  value={form.message}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
+                  rows={3}
+                  placeholder="A rough idea, a wild bet, or a boring but important system…"
+                  className="w-full resize-none border-0 border-b border-hairline bg-transparent pb-3 text-fluid-base text-foreground placeholder:text-muted-foreground/50 transition-colors focus:border-transparent focus:outline-none"
+                  disabled={status === "sending" || status === "sent"}
+                  required
+                />
+              </NumberedField>
+            </div>
+
+            {/* Submit button — clean, underline-on-hover like the reference */}
+            <div className="mt-12 flex items-center gap-6">
+              <button
+                type="submit"
+                disabled={status === "sending" || status === "sent"}
+                data-cursor
+                data-cursor-label="send"
+                className="group relative flex items-center gap-3 font-display text-fluid-lg font-medium text-foreground transition-colors hover:text-ember disabled:opacity-50"
+              >
+                <span className="relative">
+                  {status === "idle" && "Send it"}
+                  {status === "sending" && "Sending…"}
+                  {status === "sent" && "Sent"}
+                  {status === "error" && "Try again"}
+                  <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-ember transition-transform duration-500 group-hover:scale-x-100" />
+                </span>
+                {status === "sending" ? (
+                  <Loader2 className="h-5 w-5 animate-spin text-ember" />
+                ) : status === "sent" ? (
+                  <Check className="h-5 w-5 text-aurora" />
+                ) : (
+                  <Send className="h-5 w-5 text-ember transition-transform duration-300 group-hover:translate-x-1" />
+                )}
+              </button>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/60">
+                {status === "idle" && "→ enter to transmit"}
+                {status === "sending" && "transmitting…"}
+                {status === "sent" && "signal received"}
+                {status === "error" && "something went wrong"}
+              </span>
+            </div>
+
+            {/* Success celebration */}
+            <AnimatePresence>
+              {status === "sent" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: DURATION.normal, ease: EASE.signal }}
+                  className="relative mt-8 overflow-hidden rounded-2xl border border-aurora/30 bg-aurora-soft p-6"
+                >
+                  <div className="relative flex items-center gap-4">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-aurora/20">
+                      <Check className="h-5 w-5 text-aurora" />
+                    </div>
+                    <div>
+                      <div className="font-display text-lg font-medium text-foreground">
+                        Transmission received.
+                      </div>
+                      <div className="mt-0.5 text-sm text-muted-foreground">
+                        I&apos;ll get back to you within a day or two.
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </form>
+
+          {/* Side note — the invitation */}
+          <motion.aside
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10% 0px" }}
+            transition={{ duration: DURATION.slow, ease: EASE.signal, delay: 0.2 }}
+            className="lg:col-span-5 lg:pl-8"
+          >
+            <p className="font-italic-accent text-fluid-lg leading-snug text-foreground/80">
+              Internships, collaborations, or a problem worth solving at 2am —
+              my inbox is open.
+            </p>
+            <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+              I read everything; I reply to what matters. Tell me what
+              you&apos;re building and where I fit in — the rougher the idea,
+              the better.
             </p>
 
-            <div className="mt-10 space-y-2">
-              {CONTACT_CHANNELS.map((c) => {
-                const Icon = c.icon;
-                const inner = (
-                  <div className="group flex items-center justify-between rounded-2xl border border-border bg-surface/40 px-5 py-4 transition-colors hover:border-ember/40">
-                    <div className="flex items-center gap-4">
-                      <div className="grid h-9 w-9 place-items-center rounded-xl bg-ember-soft text-ember">
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <div>
-                        <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                          {c.label}
-                        </div>
-                        <div className="text-sm text-foreground">
-                          {c.value}
-                        </div>
-                      </div>
-                    </div>
-                    {c.href && (
-                      <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ember" />
-                    )}
-                  </div>
-                );
-                return c.href ? (
-                  <Magnetic
-                    key={c.label}
-                    as="a"
-                    href={c.href}
-                    strength={0.15}
-                    cursorLabel="open"
-                  >
-                    {inner}
-                  </Magnetic>
-                ) : (
-                  <div key={c.label}>{inner}</div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right — the form */}
-          <div className="relative">
-            <div className="relative overflow-hidden rounded-3xl border border-border bg-surface/40 p-8 backdrop-blur md:p-10">
-              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-aurora-soft opacity-40 blur-3xl" />
-
-              <form onSubmit={handleSubmit} className="relative space-y-6">
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-signal-pulse rounded-full bg-aurora" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora" />
-                  </span>
-                  secure channel · open
-                </div>
-
-                <FieldShell label="Your name" error={errors.name}>
-                  <input
-                    type="text"
-                    value={form.name}
-                    onChange={(e) =>
-                      setForm({ ...form, name: e.target.value })
-                    }
-                    placeholder="Ada Lovelace"
-                    className="w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
-                    disabled={status === "sending" || status === "sent"}
-                  />
-                </FieldShell>
-
-                <FieldShell label="Email" error={errors.email}>
-                  <input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) =>
-                      setForm({ ...form, email: e.target.value })
-                    }
-                    placeholder="ada@analytical.engine"
-                    className="w-full rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
-                    disabled={status === "sending" || status === "sent"}
-                  />
-                </FieldShell>
-
-                <FieldShell label="The signal" error={errors.message}>
-                  <textarea
-                    value={form.message}
-                    onChange={(e) =>
-                      setForm({ ...form, message: e.target.value })
-                    }
-                    rows={4}
-                    placeholder="What are you building, and where do I fit in?"
-                    className="w-full resize-none rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground/60 transition-colors focus:border-ember/60 focus:outline-none"
-                    disabled={status === "sending" || status === "sent"}
-                  />
-                </FieldShell>
-
-                <Magnetic
-                  as="button"
-                  strength={0.25}
-                  cursorLabel="transmit"
-                  className="group relative w-full overflow-hidden rounded-xl bg-foreground px-6 py-4 text-sm font-medium text-obsidian disabled:opacity-60"
-                  // type via props on motion button
+            {/* Direct channels */}
+            <div className="mt-10 space-y-3 border-t border-hairline pt-6">
+              {[
+                { k: "Email", v: PROFILE.email, href: `mailto:${PROFILE.email}` },
+                { k: "Phone", v: PROFILE.phone, href: `tel:${PROFILE.phone.replace(/\s/g, "")}` },
+                { k: "Based", v: PROFILE.location, href: undefined },
+              ].map((c) => (
+                <div
+                  key={c.k}
+                  className="flex items-baseline justify-between gap-4"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {status === "sending" && (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    )}
-                    {status === "sent" && <Check className="h-4 w-4" />}
-                    {status === "idle" && <Send className="h-4 w-4" />}
-                    {status === "error" && <Sparkles className="h-4 w-4" />}
-                    {status === "idle" && "Transmit"}
-                    {status === "sending" && "Transmitting…"}
-                    {status === "sent" && "Signal received"}
-                    {status === "error" && "Try again"}
+                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                    {c.k}
                   </span>
-                </Magnetic>
-              </form>
-
-              {/* Success celebration overlay */}
-              <AnimatePresence>
-                {status === "sent" && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 z-20 grid place-items-center rounded-3xl bg-background/90 backdrop-blur"
-                  >
-                    <div className="relative text-center">
-                      {/* burst particles */}
-                      {Array.from({ length: 18 }).map((_, i) => {
-                        const ang = (i / 18) * Math.PI * 2;
-                        const dist = 90 + (i % 3) * 30;
-                        const col =
-                          i % 2 === 0
-                            ? "oklch(0.74 0.2 45)"
-                            : "oklch(0.82 0.13 165)";
-                        return (
-                          <motion.span
-                            key={i}
-                            initial={{ x: 0, y: 0, opacity: 1, scale: 0 }}
-                            animate={{
-                              x: Math.cos(ang) * dist,
-                              y: Math.sin(ang) * dist,
-                              opacity: 0,
-                              scale: 1,
-                            }}
-                            transition={{ duration: 1.1, ease: EASE.signal }}
-                            className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full"
-                            style={{ backgroundColor: col }}
-                          />
-                        );
-                      })}
-                      <motion.div
-                        initial={{ scale: 0, rotate: -30 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={SPRING.bouncy}
-                        className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-aurora/20"
-                      >
-                        <Check className="h-8 w-8 text-aurora" />
-                      </motion.div>
-                      <motion.h3
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="mt-5 font-display text-xl font-medium text-foreground"
-                      >
-                        Transmission received.
-                      </motion.h3>
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.32 }}
-                        className="mt-2 text-sm text-muted-foreground"
-                      >
-                        I&apos;ll get back to you within a day or two.
-                      </motion.p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  {c.href ? (
+                    <a
+                      href={c.href}
+                      data-cursor
+                      data-cursor-label="open"
+                      className="text-sm text-foreground transition-colors hover:text-ember"
+                    >
+                      {c.v}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-foreground">{c.v}</span>
+                  )}
+                </div>
+              ))}
             </div>
-          </div>
+          </motion.aside>
         </div>
       </div>
     </section>

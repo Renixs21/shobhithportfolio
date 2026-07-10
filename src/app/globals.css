@@ -265,6 +265,23 @@
     line-height: 0.92;
     letter-spacing: -0.03em;
   }
+  /* Mega — for the Transmit headline; spans the viewport like the reference */
+  .text-fluid-mega {
+    font-size: clamp(2.75rem, 0.5rem + 9vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+
+  /* Force dark-mode text tokens inside a section that is always dark
+     (e.g. the Transmit section clones a dark reference). Keeps
+     text-foreground / text-muted-foreground readable on obsidian
+     regardless of the active theme. */
+  .scope-dark {
+    --foreground: oklch(0.94 0.012 80);
+    --muted-foreground: oklch(0.7 0.015 75);
+    --hairline: oklch(1 0 0 / 12%);
+    --border: oklch(1 0 0 / 12%);
+  }
 
   .tracking-tightest { letter-spacing: -0.035em; }
   .tracking-mono { letter-spacing: 0.02em; }
