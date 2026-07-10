@@ -220,3 +220,23 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Constellation now matches reference: centered heading + organic scattered ring + web connections + top-left labels, hover focuses cluster, click opens official page
+
+---
+Task ID: 23
+Agent: orchestrator (main)
+Task: Revert constellation graph to original clustered group-rings; only replace the title text
+
+Work Log:
+- User clarification: keep the graph layout like before (clustered group rings with logos/edges/labels), only swap the section TITLE to "A constellation, not a checklist." — do NOT put the title centered inside the graph
+- Rewrote constellation-section.tsx back to the original group-ring clustered layout:
+  - SKILL_EDGES-based connections (real pairings), group center labels (LANGUAGES/FRONTEND/BACKEND/AI/DATA/TOOLING), group legend dots on the right
+  - Logo badges (white disc + accent ring + clipped devicon logo), initials fallback, no glow
+  - Hover: node enlarges + name pill, connected edges brighten, non-cluster dims; click → opens official page; keyboard Enter/Space opens active node
+  - scope-dark dark band, theme-aware ember/aurora via readColorVar + MutationObserver
+- Title now sits ABOVE the graph as a normal section heading: "02 / TOOLKIT" eyebrow + "A constellation, not a checklist." (Fraunces, with "not" in italic ember) + description + group legend
+- Removed the centered-heading-overlay approach entirely; graph canvas is clean below the heading
+- Browser-verified: title above graph (not inside), graph shows clustered group rings with logos + edges + labels, hover shows name + brightens connections, dark band
+
+Stage Summary:
+- Lint: clean
+- Constellation graph restored to original clustered layout; only the title was replaced with "A constellation, not a checklist." (italic ember "not")
