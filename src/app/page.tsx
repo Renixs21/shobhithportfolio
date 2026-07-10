@@ -52,8 +52,6 @@ export default function Home() {
         <SectionDivider index="//" label="trace the path" accent="ember" />
         <TrajectorySection />
 
-        <TechMarquee direction="right" speed={48} />
-
         <SectionDivider index="//" label="inspect the work" accent="aurora" />
         <BuildsSection />
 

@@ -316,3 +316,17 @@ Work Log:
 Stage Summary:
 - Lint: clean
 - Manifesto now clones reference: CORE BELIEFS intro + 4 chapters with giant ember numbers alternating left/right
+
+---
+Task ID: 28
+Agent: orchestrator (main)
+Task: Remove duplicate TechMarquee after Trajectory
+
+Work Log:
+- Identified two TechMarquee instances in page.tsx: line 47 (after Manifesto, direction=left — keep) and line 55 (after Trajectory, direction=right — duplicate to remove)
+- Removed the second TechMarquee + its surrounding whitespace so Trajectory flows directly into the Builds section divider
+- Kept the original marquee after Manifesto (the "running wheel" the user wanted)
+
+Stage Summary:
+- Lint: clean
+- Only one TechMarquee remains (after Manifesto); the duplicate after Trajectory is gone
