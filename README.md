@@ -34,7 +34,6 @@ Some of the showcased work includes:
 
 - TRIAGE — AI Emergency First Aid Assistant
 - PlatesForAll — Food Waste Sharing Platform
-- BGSCET Alumni Portal
 - AI Agent Experiments
 - More projects coming soon...
 
